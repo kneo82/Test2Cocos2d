@@ -10,6 +10,11 @@
 
 @interface STCGameScene ()
 @property (nonatomic, assign)   CGSize  winSize;
+@property (nonatomic, strong)   CCLayer *playerLaerNode;
+@property (nonatomic, strong)   CCLayer *hudLaerNode;
+
+- (void)setupSceneLayer;
+
 @end
 
 @implementation STCGameScene
@@ -26,7 +31,7 @@
     STCGameScene *layer = [STCGameScene node];
     
     // add layer as a child to scene
-    [scene addChild: layer];
+    [scene addChild:layer];
     
     // return the scene
     return scene;
@@ -39,19 +44,17 @@
     self = [super init];
     
     if (self) {
+        self.touchEnabled = YES;
         self.winSize = [CCDirector sharedDirector].winSize;
-        
-        CCLayerColor *layerColor = [CCLayerColor layerWithColor:ccc4(20, 35, 20, 255)];
-        
-        [self addChild:layerColor];
-        
-        self.isTouchEnabled = YES;
-        
-        CCLabelTTF *label = [CCLabelTTF labelWithString:@"Thirteen Pixel Fonts" fontName:@"Thirteen Pixel Fonts" fontSize:20];
 
-        label.position = ccp(self.winSize.width / 2, self.winSize.height / 2);
+        [self setupSceneLayer];
         
-        [self addChild:label];
+        
+//        CCLabelTTF *label = [CCLabelTTF labelWithString:@"Thirteen Pixel Fonts" fontName:@"Thirteen Pixel Fonts" fontSize:40];
+//
+//        label.position = ccp(self.winSize.width / 2, self.winSize.height / 2);
+//        label.anchorPoint = ccp(1, 0);
+//        [self addChild:label];
     }
     
     return self;
@@ -87,6 +90,13 @@
 #pragma mark -
 #pragma mark Private
 
+- (void)setupSceneLayer {
+    self.playerLaerNode = [CCLayer node];
+    [self addChild:self.playerLaerNode];
+    
+    self.hudLaerNode = [CCLayer node];
+    [self addChild:self.hudLaerNode];
+}
 
 
 @end
