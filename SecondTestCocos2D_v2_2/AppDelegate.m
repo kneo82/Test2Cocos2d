@@ -85,9 +85,10 @@
 							   numberOfSamples:0];
 	
 	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+//	director_.wantsFullScreenLayout = YES;
+//    director_.edgesForExtendedLayout = UIRectEdgeAll; //  wantsFullScreenLayout = YES;
 	
-	director_.wantsFullScreenLayout = YES;
-	
+//    director_.extendedLayoutIncludesOpaqueBars = YES;
 	// Display FSP and SPF
 	[director_ setDisplayStats:YES];
 	
