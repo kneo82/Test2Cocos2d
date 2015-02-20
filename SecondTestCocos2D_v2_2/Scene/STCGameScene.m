@@ -46,6 +46,12 @@
         [self addChild:layerColor];
         
         self.isTouchEnabled = YES;
+        
+        CCLabelTTF *label = [CCLabelTTF labelWithString:@"Thirteen Pixel Fonts" fontName:@"Thirteen Pixel Fonts" fontSize:20];
+
+        label.position = ccp(self.winSize.width / 2, self.winSize.height / 2);
+        
+        [self addChild:label];
     }
     
     return self;

@@ -19,25 +19,26 @@
 -(NSUInteger)supportedInterfaceOrientations {
 	
 	// iPhone only
-	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
-		return UIInterfaceOrientationMaskLandscape;
-	
-	// iPad only
-	return UIInterfaceOrientationMaskLandscape;
+//	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
+//		return UIInterfaceOrientationMaskLandscape;
+//	
+//	// iPad only
+//	return UIInterfaceOrientationMaskLandscape;
+    return UIInterfaceOrientationMaskPortrait;
 }
 
-// Supported orientations. Customize it for your own needs
-// Only valid on iOS 4 / 5. NOT VALID for iOS 6.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	// iPhone only
-	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	
-	// iPad only
-	// iPhone only
-	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-}
+//// Supported orientations. Customize it for your own needs
+//// Only valid on iOS 4 / 5. NOT VALID for iOS 6.
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+//{
+//	// iPhone only
+//	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
+//		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+//	
+//	// iPad only
+//	// iPhone only
+//	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+//}
 
 // This is needed for iOS4 and iOS5 in order to ensure
 // that the 1st scene has the correct dimensions
