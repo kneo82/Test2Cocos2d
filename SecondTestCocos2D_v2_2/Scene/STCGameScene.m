@@ -9,7 +9,11 @@
 #import "STCGameScene.h"
 
 @interface STCGameScene ()
-@property (nonatomic, assign)   CGSize  winSize;
+@property (nonatomic, assign)   CGSize      winSize;
+@property (nonatomic, assign)   NSInteger   familyIdx;
+
+- (void)showCurFamily;
+
 @end
 
 @implementation STCGameScene
@@ -46,6 +50,8 @@
         [self addChild:layerColor];
         
         self.isTouchEnabled = YES;
+        
+        [self showCurFamily];
     }
     
     return self;
@@ -62,17 +68,25 @@
 }
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"ccTouchBegan");
+//    NSLog(@"ccTouchBegan");
+    
+    self.familyIdx ++;
+    
+    if (self.familyIdx >= [UIFont familyNames].count) {
+        self.familyIdx = 0;
+    }
+    
+    [self showCurFamily];
     
     return YES;
 }
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"ccTouchMoved");
+//    NSLog(@"ccTouchMoved");
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"ccTouchEnded");
+//    NSLog(@"ccTouchEnded");
 }
 
 #pragma mark -
@@ -81,6 +95,25 @@
 #pragma mark -
 #pragma mark Private
 
+- (void)showCurFamily {
+    [self removeAllChildren];
+    
+    CCLayerColor *layerColor = [CCLayerColor layerWithColor:ccc4(20, 35, 20, 255)];
+    [self addChild:layerColor];
+    
+    NSString *familyName = [UIFont familyNames][self.familyIdx];
+    NSLog(@"%lu - %@", (unsigned long)self.familyIdx, familyName);
+    
+    NSArray * fontNames = [UIFont fontNamesForFamilyName:familyName];
+    
+    [fontNames enumerateObjectsUsingBlock:^(NSString *fontName, NSUInteger idx, BOOL *stop) {
+        CCLabelTTF * label = [CCLabelTTF labelWithString:fontName fontName:fontName fontSize:20];
+        label.position = ccp(self.winSize.width / 2,
+                             (self.winSize.height * (idx + 1) / (fontNames.count + 1)));
 
+        
+        [self addChild:label];
+     }];
+}
 
 @end
