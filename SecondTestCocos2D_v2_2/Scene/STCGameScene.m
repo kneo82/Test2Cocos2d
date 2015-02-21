@@ -8,20 +8,11 @@
 
 #import "STCGameScene.h"
 
-typedef NS_ENUM(NSUInteger, STCNodesName) {
-    kSTCNodeNameScoreLabel              = 100,
-    kSTCNodeNamePlayerHealthBackground  = 120,
-    kSTCNodeNamePlayerHealth            = 125,
-};
+#import "PlayerShip.h"
 
-static const NSUInteger kSTCBarHeightSize       = 45;
-static const NSUInteger kSTCBarFontSize         = 20;
-static const NSUInteger kSTCHealthBarFontSize   = 14;
-static NSString * const kSTCScoreFontName       = @"Thirteen Pixel Fonts";
-static NSString * const kSTCHealthBarFontName   = @"Arial";
-static NSString * const kSTCScoreLabel          = @"Score: 0";
-static NSString * const kSTCHealthBar           = @"=======================================";
-;
+#import "Constants.h"
+
+#import "CGGeometry+ZCExtension.h"
 
 @interface STCGameScene ()
 @property (nonatomic, assign)   CGSize  winSize;
@@ -29,9 +20,12 @@ static NSString * const kSTCHealthBar           = @"============================
 @property (nonatomic, strong)   CCLayer         *hudLaerNode;
 @property (nonatomic, strong)   CCAction        *scoreFlashAction;
 @property (nonatomic, strong)   CCLabelBMFont   *playerHealthLabel;
+@property (nonatomic, strong)   PlayerShip      *playerShip;
+@property (nonatomic, assign)   CGPoint         deltaPoint;
 
 - (void)setupSceneLayer;
 - (void)setupUI;
+- (void)setupEntitys;
 
 @end
 
@@ -67,13 +61,9 @@ static NSString * const kSTCHealthBar           = @"============================
 
         [self setupSceneLayer];
         [self setupUI];
+        [self setupEntitys];
         
-        
-//        CCLabelTTF *label = [CCLabelTTF labelWithString:@"Thirteen Pixel Fonts" fontName:@"Thirteen Pixel Fonts" fontSize:40];
-//
-//        label.position = ccp(self.winSize.width / 2, self.winSize.height / 2);
-//        label.anchorPoint = ccp(1, 0);
-//        [self addChild:label];
+        [self scheduleUpdate];
     }
     
     return self;
@@ -96,11 +86,40 @@ static NSString * const kSTCHealthBar           = @"============================
 }
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"ccTouchMoved");
+    CGPoint currentPoint = [touch locationInView:[touch view]];
+    currentPoint = [[CCDirector sharedDirector] convertToGL:currentPoint];
+    
+    CGPoint previousPoint = [touch previousLocationInView:[touch view]];
+    previousPoint = [[CCDirector sharedDirector] convertToGL:previousPoint];
+    
+    self.deltaPoint =  CGSubtractionVectors(currentPoint, previousPoint);
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"ccTouchEnded");
+    self.deltaPoint = CGPointZero;
+}
+
+- (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
+    self.deltaPoint = CGPointZero;
+}
+
+#pragma mark -
+#pragma mark Life Cycle
+
+- (void)update:(ccTime)delta {
+    // 1
+    CGPoint newPoint = CGAddVectors(self.playerShip.position, self.deltaPoint);
+    // 2
+    newPoint.x = clampf(newPoint.x,
+                        self.playerShip.contentSize.width / 2,
+                        self.winSize.width - self.playerShip.contentSize.width / 2);
+    
+    newPoint.y = clampf(newPoint.y,
+                       self.playerShip.contentSize.height / 2,
+                       self.winSize.height - self.playerShip.contentSize.height / 2 - kSTCBarHeightSize);
+    // 3
+    self.playerShip.position = newPoint;
+    self.deltaPoint = CGPointZero;
 }
 
 #pragma mark -
@@ -150,10 +169,10 @@ static NSString * const kSTCHealthBar           = @"============================
     
     [scoreLabel runAction:fulFlashAction];
     
-    self.playerHealthLabel = [CCLabelTTF labelWithString:kSTCHealthBar fontName:kSTCHealthBarFontName fontSize:0];
+    self.playerHealthLabel = [CCLabelTTF labelWithString:kSTCHealthBar fontName:kSTCArialFontName fontSize:0];
     
     CCLabelTTF *playerHealthBackgroundLabel = [CCLabelTTF labelWithString:kSTCHealthBar
-                                                                 fontName:kSTCHealthBarFontName
+                                                                 fontName:kSTCArialFontName
                                                                  fontSize:kSTCHealthBarFontSize];
     
     playerHealthBackgroundLabel.tag = kSTCNodeNamePlayerHealthBackground;
@@ -172,25 +191,21 @@ static NSString * const kSTCHealthBar           = @"============================
                                (testHealth / 100 * kSTCHealthBar.length)];
     
     CCLabelTTF *playerHealthLabel = [CCLabelTTF labelWithString:actualHealth
-                                                       fontName:kSTCHealthBarFontName
+                                                       fontName:kSTCArialFontName
                                                        fontSize:kSTCHealthBarFontSize];
     
     playerHealthLabel.tag = kSTCNodeNamePlayerHealth;
     playerHealthLabel.color = ccGREEN;
-    
-//    CGFloat yPosition = size.height - hudBarBackground.contentSize.height - kSTCHealthBarFontSize / 3;
-//    CGPoint position = ccp(0, yPosition);
+
     playerHealthLabel.position = position;
     playerHealthLabel.anchorPoint = ccp(0, 0);
     
     [self.hudLaerNode addChild:playerHealthLabel];
-    
+}
 
-//    playerHealthLabel.name = "playerHealthLabel" playerHealthLabel.fontColor = SKColor.greenColor() playerHealthLabel.fontSize = 50 playerHealthLabel.text =
-//    healthBarString.substringToIndex(20*75/100) playerHealthLabel.horizontalAlignmentMode = .Left playerHealthLabel.verticalAlignmentMode = .Top playerHealthLabel.position = CGPoint(
-//                                                                                                                                                                                      x: CGRectGetMinX(playableRect),
-//                                                                                                                                                                                      y: size.height - CGFloat(hudHeight) + playerHealthLabel.frame.size.height) hudLayerNode.addChild(playerHealthLabel)
-//    ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+- (void)setupEntitys {
+    self.playerShip = [[PlayerShip alloc] initWithPosition:CGPointMake(self.winSize.width / 2, 100)];
+    [self.playerLaerNode addChild:self.playerShip];
 }
 
 @end

@@ -185,6 +185,9 @@
 		849F641C1A97F3F50013BD81 /* b2WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 849F63E81A97F3F50013BD81 /* b2WeldJoint.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		849F641D1A97F3F50013BD81 /* b2WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 849F63EA1A97F3F50013BD81 /* b2WheelJoint.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		849F641E1A97F3F50013BD81 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 849F63ED1A97F3F50013BD81 /* b2Rope.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		84A0CF5E1A98A42600E27AAA /* STCEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0CF5D1A98A42600E27AAA /* STCEntity.m */; };
+		84A0CF611A98AB1E00E27AAA /* PlayerShip.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0CF601A98AB1E00E27AAA /* PlayerShip.m */; };
+		84A0CF6B1A992C1300E27AAA /* CGGeometry+ZCExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0CF6A1A992C1300E27AAA /* CGGeometry+ZCExtension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -560,6 +563,13 @@
 		849F63EB1A97F3F50013BD81 /* b2WheelJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2WheelJoint.h; sourceTree = "<group>"; };
 		849F63ED1A97F3F50013BD81 /* b2Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Rope.cpp; sourceTree = "<group>"; };
 		849F63EE1A97F3F50013BD81 /* b2Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Rope.h; sourceTree = "<group>"; };
+		84A0CF5C1A98A42600E27AAA /* STCEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCEntity.h; sourceTree = "<group>"; };
+		84A0CF5D1A98A42600E27AAA /* STCEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCEntity.m; sourceTree = "<group>"; };
+		84A0CF5F1A98AB1E00E27AAA /* PlayerShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerShip.h; sourceTree = "<group>"; };
+		84A0CF601A98AB1E00E27AAA /* PlayerShip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerShip.m; sourceTree = "<group>"; };
+		84A0CF621A98AC4000E27AAA /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		84A0CF691A992C1300E27AAA /* CGGeometry+ZCExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+ZCExtension.h"; sourceTree = "<group>"; };
+		84A0CF6A1A992C1300E27AAA /* CGGeometry+ZCExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+ZCExtension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -814,6 +824,10 @@
 		55C4FF2E1A974C66003C22A7 /* SecondTestCocos2D_v2_2 */ = {
 			isa = PBXGroup;
 			children = (
+				84A0CF621A98AC4000E27AAA /* Constants.h */,
+				84A0CF691A992C1300E27AAA /* CGGeometry+ZCExtension.h */,
+				84A0CF6A1A992C1300E27AAA /* CGGeometry+ZCExtension.m */,
+				84A0CF5B1A98A3B700E27AAA /* Entities */,
 				55C400CD1A9755A6003C22A7 /* Scene */,
 				55C400BF1A974C68003C22A7 /* AppDelegate.h */,
 				55C400C01A974C68003C22A7 /* AppDelegate.m */,
@@ -1186,6 +1200,17 @@
 			path = Rope;
 			sourceTree = "<group>";
 		};
+		84A0CF5B1A98A3B700E27AAA /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				84A0CF5C1A98A42600E27AAA /* STCEntity.h */,
+				84A0CF5D1A98A42600E27AAA /* STCEntity.m */,
+				84A0CF5F1A98AB1E00E27AAA /* PlayerShip.h */,
+				84A0CF601A98AB1E00E27AAA /* PlayerShip.m */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1307,6 +1332,7 @@
 				55C4001D1A974C67003C22A7 /* CCTransition.m in Sources */,
 				55C4FFC51A974C67003C22A7 /* CCParticleExamples.m in Sources */,
 				55C4FFC21A974C67003C22A7 /* CCParticleBatchNode.m in Sources */,
+				84A0CF6B1A992C1300E27AAA /* CGGeometry+ZCExtension.m in Sources */,
 				55C400051A974C67003C22A7 /* CCTextureAtlas.m in Sources */,
 				55C400B31A974C68003C22A7 /* utility.c in Sources */,
 				849F64111A97F3F50013BD81 /* b2PolygonContact.cpp in Sources */,
@@ -1335,6 +1361,7 @@
 				849F64031A97F3F50013BD81 /* b2Body.cpp in Sources */,
 				55C4FFA31A974C67003C22A7 /* CCLabelAtlas.m in Sources */,
 				55C4FFBF1A974C67003C22A7 /* CCParallaxNode.m in Sources */,
+				84A0CF611A98AB1E00E27AAA /* PlayerShip.m in Sources */,
 				55C400C71A974C68003C22A7 /* IntroLayer.m in Sources */,
 				55C4FF571A974C66003C22A7 /* CCActionGrid.m in Sources */,
 				849F63F31A97F3F50013BD81 /* b2CollideEdge.cpp in Sources */,
@@ -1389,6 +1416,7 @@
 				849F64041A97F3F50013BD81 /* b2ContactManager.cpp in Sources */,
 				849F641A1A97F3F50013BD81 /* b2RevoluteJoint.cpp in Sources */,
 				55C4FF601A974C66003C22A7 /* CCActionInterval.m in Sources */,
+				84A0CF5E1A98A42600E27AAA /* STCEntity.m in Sources */,
 				55C4FFCE1A974C67003C22A7 /* CCPhysicsDebugNode.m in Sources */,
 				849F64001A97F3F50013BD81 /* b2Settings.cpp in Sources */,
 				55C4FF541A974C66003C22A7 /* CCActionEase.m in Sources */,
