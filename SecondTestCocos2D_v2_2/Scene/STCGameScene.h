@@ -11,6 +11,11 @@
 
 @interface STCGameScene : CCLayer
 
+@property (nonatomic, strong) CCLayer *playerLayerNode;
+@property (nonatomic, strong) CCLayer *hudLayerNode;
+@property (nonatomic, strong) CCLayer *bulletLayerNode;
+@property (nonatomic, strong) CCLayer *enemyLayerNode;
+
 + (CCScene *)scene;
 
 @end

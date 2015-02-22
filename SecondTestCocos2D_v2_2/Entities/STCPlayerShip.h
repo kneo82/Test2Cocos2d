@@ -8,6 +8,6 @@
 
 #import "STCEntity.h"
 
-@interface PlayerShip : STCEntity
+@interface STCPlayerShip : STCEntity
 
 @end

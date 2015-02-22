@@ -45,4 +45,17 @@
 
 }
 
+#pragma mark -
+#pragma mark Public
+
+- (void)configureCollisionBody
+{
+    // Overridden by a subclass
+}
+
+//- (void)collidedWith:(b2BodyDef *)body contact:(SKPhysicsContact*)contact
+//{
+//    // Overridden by a subclass
+//}
+
 @end

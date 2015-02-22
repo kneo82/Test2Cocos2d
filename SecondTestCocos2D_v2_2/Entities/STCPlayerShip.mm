@@ -6,13 +6,11 @@
 //  Copyright (c) 2015 IDPGroup. All rights reserved.
 //
 
-#import "PlayerShip.h"
+#import "STCPlayerShip.h"
 
 #import "Constants.h"
 
-
-
-@implementation PlayerShip
+@implementation STCPlayerShip
 
 #pragma mark -
 #pragma mark Class Methods
@@ -76,8 +74,8 @@
 #pragma mark -
 #pragma mark Life Cycle
 
-- (void)update:(CFTimeInterval)delta {
-    
-}
+//- (void)update:(CFTimeInterval)delta {
+//    
+//}
 
 @end
