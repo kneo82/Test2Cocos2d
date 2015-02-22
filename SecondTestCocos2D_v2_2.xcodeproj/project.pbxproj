@@ -192,6 +192,7 @@
 		84A58EBB1A99CC7400CA9C37 /* STCEnemyA.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A58EBA1A99CC7400CA9C37 /* STCEnemyA.mm */; };
 		84A58EBE1A99CC8600CA9C37 /* STCEnemyB.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A58EBD1A99CC8600CA9C37 /* STCEnemyB.mm */; };
 		84A58EC11A99CD9400CA9C37 /* AISteering.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A58EC01A99CD9400CA9C37 /* AISteering.mm */; };
+		84A591261A9A788B00CA9C37 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A591251A9A788B00CA9C37 /* GLES-Render.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -582,6 +583,8 @@
 		84A58EBD1A99CC8600CA9C37 /* STCEnemyB.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = STCEnemyB.mm; sourceTree = "<group>"; };
 		84A58EBF1A99CD9400CA9C37 /* AISteering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AISteering.h; sourceTree = "<group>"; };
 		84A58EC01A99CD9400CA9C37 /* AISteering.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AISteering.mm; sourceTree = "<group>"; };
+		84A591241A9A788B00CA9C37 /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
+		84A591251A9A788B00CA9C37 /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -836,6 +839,8 @@
 		55C4FF2E1A974C66003C22A7 /* SecondTestCocos2D_v2_2 */ = {
 			isa = PBXGroup;
 			children = (
+				84A591241A9A788B00CA9C37 /* GLES-Render.h */,
+				84A591251A9A788B00CA9C37 /* GLES-Render.mm */,
 				84A58EBF1A99CD9400CA9C37 /* AISteering.h */,
 				84A58EC01A99CD9400CA9C37 /* AISteering.mm */,
 				84A0CF621A98AC4000E27AAA /* Constants.h */,
@@ -1426,6 +1431,7 @@
 				55C400231A974C67003C22A7 /* CCTransitionProgress.m in Sources */,
 				55C400461A974C67003C22A7 /* CCGLView.m in Sources */,
 				55C4007A1A974C68003C22A7 /* CDOpenALSupport.m in Sources */,
+				84A591261A9A788B00CA9C37 /* GLES-Render.mm in Sources */,
 				55C4FF5D1A974C66003C22A7 /* CCActionInstant.m in Sources */,
 				55C4FF7E1A974C66003C22A7 /* CCClippingNode.m in Sources */,
 				55C400021A974C67003C22A7 /* CCTexture2D.m in Sources */,

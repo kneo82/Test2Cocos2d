@@ -12,12 +12,14 @@
 #import "STCBullet.h"
 #import "STCEnemyA.h"
 #import "STCEnemyB.h"
-
+#import "GLES-Render.h"
 #import "Constants.h"
 
 #import "CGGeometry+ZCExtension.h"
 
-@interface STCGameScene ()
+@interface STCGameScene () {
+    GLESDebugDraw *_debugDraw;
+}
 @property (nonatomic, strong)   CCAction        *scoreFlashAction;
 @property (nonatomic, strong)   CCLabelBMFont   *playerHealthLabel;
 @property (nonatomic, strong)   STCPlayerShip   *playerShip;
@@ -31,6 +33,8 @@
 @property (nonatomic, assign)   NSTimeInterval  dt;
 @property (nonatomic, assign)   CGFloat         score;
 @property (nonatomic, assign)   NSInteger       gameState;
+
+@property (nonatomic, assign)   b2World         *physicsWorld;
 
 - (void)setupSceneLayer;
 - (void)setupUI;
@@ -63,13 +67,43 @@
 #pragma mark -
 #pragma mark Initialization and Dealocation
 
+- (void)dealloc {
+    delete self.physicsWorld;
+    self.physicsWorld = NULL;
+}
+
+#if DEBUG
+-(void) draw
+{
+    [super draw];
+    ccGLEnableVertexAttribs(kCCVertexAttribFlag_Position); kmGLPushMatrix();
+    self.physicsWorld  -> DrawDebugData();
+    kmGLPopMatrix();
+}
+#endif
+
 - (id)init {
     self = [super init];
     
     if (self) {
         self.touchEnabled = YES;
         self.winSize = [CCDirector sharedDirector].winSize;
-
+        
+        b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
+        self.physicsWorld = new b2World(gravity);
+        self.physicsWorld->DrawDebugData();
+        
+        _debugDraw = new GLESDebugDraw(PTM_RATIO);
+        self.physicsWorld->SetDebugDraw(_debugDraw);
+        uint32 flags = 0;
+        flags += b2Draw::e_shapeBit;
+        flags += b2Draw::e_jointBit;
+        flags += b2Draw::e_aabbBit;
+        flags += b2Draw::e_pairBit;
+        flags += b2Draw::e_centerOfMassBit;
+        _debugDraw->SetFlags(flags);
+        
+        
         [self setupSceneLayer];
         [self setupUI];
         [self setupEntitys];
@@ -145,7 +179,7 @@
                 CGPoint bulletPosition = ccp(self.playerShip.position.x,
                                              self.playerShip.position.y + self.playerShip.contentSize.height / 2);
                 
-                STCBullet *bullet = [[STCBullet alloc] initWithPosition:bulletPosition];
+                STCBullet *bullet = [[STCBullet alloc] initWithPosition:bulletPosition physicsWorld:self.physicsWorld];
                 bullet.color = ccRED;
                 
                 [self.bulletLayerNode addChild:bullet];
@@ -318,19 +352,21 @@
 }
 
 - (void)setupEntitys {
-    self.playerShip = [[STCPlayerShip alloc] initWithPosition:CGPointMake(self.winSize.width / 2, 100)];
+    self.playerShip = [[STCPlayerShip alloc] initWithPosition:CGPointMake(self.winSize.width / 2, 100) physicsWorld:self.physicsWorld];
     [self.playerLayerNode addChild:self.playerShip];
     
     for (NSUInteger index = 0; index < 5; index++) {
         STCEnemyA *enemy = [[STCEnemyA alloc] initWithPosition:ccp(CGFloatRandomInRange(50, self.winSize.width - 50),
-                                                                                        self.winSize.height + 50)];
+                                                                                        self.winSize.height + 50)
+                                                  physicsWorld:self.physicsWorld];
         
         [self.enemyLayerNode addChild:enemy];
     }
     
     for (NSUInteger index = 0; index < 4; index++) {
-        STCEnemyB *enemy = [[STCEnemyB alloc] initWithPosition:ccp(CGFloatRandomInRange(50, self.winSize.width - 50),
-                                                                                        self.winSize.height + 50)];
+        CGPoint enemyPosition = ccp(CGFloatRandomInRange(50, self.winSize.width - 50), self.winSize.height + 50);
+        STCEnemyB *enemy = [[STCEnemyB alloc] initWithPosition:enemyPosition
+                                                  physicsWorld:self.physicsWorld];
         
         [self.enemyLayerNode addChild:enemy];
     }

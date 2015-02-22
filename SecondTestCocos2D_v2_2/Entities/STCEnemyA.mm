@@ -75,8 +75,8 @@ static CCAction *moveBackAction = nil;
 #pragma mark -
 #pragma mark Initialization and Dealocation
 
-- (instancetype)initWithPosition:(CGPoint)position {
-    self = [super initWithPosition:position];
+- (instancetype)initWithPosition:(CGPoint)position physicsWorld:(b2World *)world {
+    self = [super initWithPosition:position physicsWorld:world];
     
     if (self) {
         self.tag = kSTCNodeNameEnemy;
@@ -143,16 +143,13 @@ static CCAction *moveBackAction = nil;
 #pragma mark Physics and Collision
 
 - (void)configureCollisionBody {
-//    b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
-//    b2World *world = new b2World(gravity);
-//    b2World *w = b2WorldManifold
-//    b2BodyDef phisicBody;
-//    phisicBody.type = b2_dynamicBody;
-//    phisicBody.position.Set(self.position.x / PTM_RATIO, self.position.y / PTM_RATIO);
-//    
-//    phisicBody.userData = (__bridge void *)self;
-//    
-//    world->CreateBody(&phisicBody);
+    b2BodyDef physicsBody;
+    physicsBody.type = b2_dynamicBody;
+    physicsBody.position.Set(self.position.x / PTM_RATIO, self.position.y / PTM_RATIO);
+    
+    physicsBody.userData = (__bridge void *)self;
+    
+    self.physicsWorld->CreateBody(&physicsBody);
     
     /*
     self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.frame.size];

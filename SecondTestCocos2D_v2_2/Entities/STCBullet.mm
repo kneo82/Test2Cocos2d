@@ -33,8 +33,8 @@
 #pragma mark -
 #pragma mark Initialization and Dealocation
 
-- (instancetype)initWithPosition:(CGPoint)position {
-    self = [super initWithPosition:position];
+- (instancetype)initWithPosition:(CGPoint)position physicsWorld:(b2World *)world {
+    self = [super initWithPosition:position physicsWorld:world];
     
     if (self) {
         self.tag = kSTCNodeNameBullet;

@@ -25,12 +25,13 @@
 #pragma mark -
 #pragma mark Initialization and Dealocation
 
-- (instancetype)initWithPosition:(CGPoint)position {
+- (instancetype)initWithPosition:(CGPoint)position physicsWorld:(b2World *)world {
     CCSprite *sprite = [[self class] generateSprite];
     
     self = [super initWithTexture:sprite.texture];
     
     if (self) {
+        self.physicsWorld = world;
         self.position = position;
         self.direction = CGPointZero;
     }

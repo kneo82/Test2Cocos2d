@@ -12,12 +12,14 @@
 #import "Constants.h"
 
 @interface STCEntity : CCSprite
+@property (nonatomic, assign)   b2World     *physicsWorld;
+@property (nonatomic, assign)   b2Body      *physicsBody;
 @property (nonatomic, assign)   CGPoint     direction;
 @property (nonatomic ,assign)   CGFloat     health;
 @property (nonatomic, assign)   CGFloat     maxHealth;
 
 + (CCSprite *)generateSprite;
-- (instancetype)initWithPosition:(CGPoint)position;
+- (instancetype)initWithPosition:(CGPoint)position physicsWorld:(b2World *)world;
 - (void)update:(CFTimeInterval)delta;
 
 /**
