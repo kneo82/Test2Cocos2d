@@ -23,7 +23,7 @@
 @property (nonatomic, assign)   MyContactListener   *myContactListener;
 
 @property (nonatomic, strong)   CCAction            *scoreFlashAction;
-@property (nonatomic, strong)   CCLabelBMFont       *playerHealthLabel;
+@property (nonatomic, strong)   CCLabelTTF          *playerHealthLabel;
 @property (nonatomic, strong)   STCPlayerShip       *playerShip;
 @property (nonatomic, strong)   CCAction            *gameOverPulse;
 @property (nonatomic, strong)   CCLabelTTF          *gameOverLabel;
@@ -95,6 +95,7 @@
         [self setupEntitys];
         
         [self scheduleUpdate];
+        [self schedule:@selector(tick:)];
     }
     
     return self;
@@ -211,7 +212,7 @@
                 self.gameState = GameOver;
             }
         }
-            
+        
             break;
         case GameOver: {
             // If the game over message has not been added to the scene yet then add it
@@ -219,9 +220,16 @@
             if (!self.gameOverLabel.parent) {
 //                 Remove the bullets, enemites and player from the scene as the game is over
                 [self.bulletLayerNode removeAllChildren];
-                [self.enemyLayerNode removeAllChildren];
+//                [self.enemyLayerNode removeAllChildrenWithCleanup:YES];
+//                for (STCEntity *node in self.enemyLayerNode.children) {
+//                    self.physicsWorld->DestroyBody(node.physicsBody);
+//                }
+                
+                [self.enemyLayerNode removeAllChildrenWithCleanup:YES];
                 
                 [self.playerShip removeFromParent];
+                self.playerShip = nil;
+                
                 [self.hudLayerNode addChild:self.gameOverLabel];
                 [self.hudLayerNode addChild:self.tapScreenLabel];
                 
@@ -245,6 +253,7 @@
 - (void)setupPhysicsWorld {
     b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
     self.physicsWorld = new b2World(gravity);
+
     self.physicsWorld->DrawDebugData();
     
     // Create contact listener
@@ -325,10 +334,8 @@
 
     [self.hudLayerNode addChild:playerHealthBackgroundLabel];
     
-    
-    CGFloat testHealth = 75;
     NSString * actualHealth = [kSTCHealthBar substringToIndex:
-                               (testHealth / 100 * kSTCHealthBar.length)];
+                               (self.playerShip.health / 100 * kSTCHealthBar.length)];
     
     CCLabelTTF *playerHealthLabel = [CCLabelTTF labelWithString:actualHealth
                                                        fontName:kSTCArialFontName
@@ -339,6 +346,8 @@
 
     playerHealthLabel.position = position;
     playerHealthLabel.anchorPoint = ccp(0, 0);
+    
+    self.playerHealthLabel = playerHealthLabel;
     
     [self.hudLayerNode addChild:playerHealthLabel];
     
@@ -369,8 +378,13 @@
 }
 
 - (void)setupEntitys {
-    self.playerShip = [[STCPlayerShip alloc] initWithPosition:CGPointMake(self.winSize.width / 2, 100) physicsWorld:self.physicsWorld];
+    self.playerShip = [[STCPlayerShip alloc] initWithPosition:CGPointMake(self.winSize.width / 2, 100)
+                                                 physicsWorld:self.physicsWorld];
+    
     [self.playerLayerNode addChild:self.playerShip];
+    
+    self.playerHealthLabel.string = [kSTCHealthBar substringToIndex:(self.playerShip.health / 100 * kSTCHealthBar.length)];
+    
     
     for (NSUInteger index = 0; index < 5; index++) {
         STCEnemyA *enemy = [[STCEnemyA alloc] initWithPosition:ccp(CGFloatRandomInRange(50, self.winSize.width - 50),
@@ -421,22 +435,22 @@
 #pragma mark -
 #pragma mark Physics Contact Delegate
 
-//- (void)didBeginContact:(SKPhysicsContact *)contact
-//{
-//    
-//    // Grab the first body that has been involved in the collision and call it's collidedWith method
-//    // allowing it to react to the collision...
-//    SKNode *node = contact.bodyA.node;
-//    if ([node isKindOfClass:[Entity class]]) {
-//        [(Entity*)node collidedWith:contact.bodyB contact:contact];
-//    }
-//    
-//    // ... and do the same for the second body
-//    node = contact.bodyB.node;
-//    if ([node isKindOfClass:[Entity class]]) {
-//        [(Entity*)node collidedWith:contact.bodyA contact:contact];
-//    }
-//    
-//}
+- (void)tick:(ccTime)dt {
+    std::vector<MyContact>::iterator pos;
+    for(pos = self.myContactListener->_contacts.begin();
+        pos != self.myContactListener->_contacts.end(); ++pos) {
+        MyContact contact = *pos;
+        
+        b2Body *bodyA = contact.fixtureA->GetBody();
+        b2Body *bodyB = contact.fixtureB->GetBody();
+        if (bodyA->GetUserData() != NULL && bodyB->GetUserData() != NULL) {
+            STCEntity *spriteA = (__bridge STCEntity *) bodyA->GetUserData();
+            STCEntity *spriteB = (__bridge STCEntity *) bodyB->GetUserData();
+            
+            [spriteA collidedWith:spriteB contact:contact];
+            [spriteB collidedWith:spriteA contact:contact];
+        }
+    }
+}
 
 @end

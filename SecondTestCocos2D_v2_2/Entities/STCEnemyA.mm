@@ -19,7 +19,6 @@
 + (void)loadSharedAssets;
 
 - (void)configureCollisionBody;
-//- (void)collidedWith:(b2BodyDef)body contact:(SKPhysicsContact*)contact;
 
 @end
 
@@ -111,9 +110,7 @@ static CCAction *moveBackAction = nil;
         [STCEnemyA loadSharedAssets];
         
         [self configureCollisionBody];
-        
         [self schedule:@selector(tick:)];
-//        [self scheduleUpdate];
     }
     
     return self;
@@ -122,7 +119,7 @@ static CCAction *moveBackAction = nil;
 #pragma mark -
 #pragma mark Life Cycle
 
-- (void)update:(CFTimeInterval)delta {
+- (void)update:(ccTime)delta  {
     // Check to see if we have reached the current waypoint and if so set the next one
     if (self.aiSteering.waypointReached) {
         [self.aiSteering updateWaypoint:
@@ -144,6 +141,8 @@ static CCAction *moveBackAction = nil;
 #pragma mark Physics and Collision
 
 - (void)tick:(ccTime) dt {
+    self.physicsWorld->Step(dt, 10, 10);
+    
     CGPoint position = self.position;
     CGPoint box2dPosition = ccp(position.x / PTM_RATIO, position.y / PTM_RATIO);
     self.physicsBody->SetTransform(b2Vec2(box2dPosition.x,box2dPosition.y), self.physicsBody->GetAngle());
@@ -166,38 +165,6 @@ static CCAction *moveBackAction = nil;
     spriteShapeDef.density = 10.0;
     spriteShapeDef.isSensor = true;
     self.physicsBody->CreateFixture(&spriteShapeDef);
-    
-    
-    /*
-    self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.frame.size];
-    
-    self.physicsBody.affectedByGravity = NO;
-    
-    // Set the category of the physics object that will be used for collisions
-    self.physicsBody.categoryBitMask = ColliderTypeEnemy;
-    
-    // We want to know when a collision happens but we dont want the bodies to actually react to each other so we
-    // set the collisionBitMask to 0
-    self.physicsBody.collisionBitMask = 0;
-    
-    // Make sure we get told about these collisions
-    self.physicsBody.contactTestBitMask = ColliderTypePlayer | ColliderTypeBullet;
-
-
-     ballBodyDef.userData = _ball;
-     _body = _world->CreateBody(&ballBodyDef);
-     
-     b2CircleShape circle;
-     circle.m_radius = 26.0/PTM_RATIO;
-     
-     b2FixtureDef ballShapeDef;
-     ballShapeDef.shape = &circle;
-     ballShapeDef.density = 1.0f;
-     ballShapeDef.friction = 0.2f;
-     ballShapeDef.restitution = 0.8f;
-     _body->CreateFixture(&ballShapeDef);
-     
-     */
 }
 //
 //- (void)collidedWith:(b2BodyDef *)body contact:(SKPhysicsContact*)contact {

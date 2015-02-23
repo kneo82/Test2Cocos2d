@@ -28,7 +28,11 @@
 - (void)dealloc {
     if (self.physicsBody != NULL && self.physicsWorld != NULL) {
         self.physicsWorld->DestroyBody(self.physicsBody);
+        
+        NSLog(@"dealloc  %@", NSStringFromClass([self class]));
     }
+
+    self.physicsBody = NULL;
 }
 
 - (instancetype)initWithPosition:(CGPoint)position physicsWorld:(b2World *)world {
@@ -48,7 +52,7 @@
 #pragma mark -
 #pragma mark Life Cycle
 
-- (void)update:(CFTimeInterval)delta {
+- (void)update:(ccTime)delta  {
 
 }
 
@@ -60,9 +64,8 @@
     // Overridden by a subclass
 }
 
-//- (void)collidedWith:(b2BodyDef *)body contact:(SKPhysicsContact*)contact
-//{
-//    // Overridden by a subclass
-//}
+- (void)collidedWith:(STCEntity *)entity contact:(MyContact)contact {
+    // Overridden by a subclass
+}
 
 @end

@@ -15,7 +15,7 @@
 #pragma -
 #pragma Properties
 
-@property (strong)  STCEntity       *entity;
+@property (weak)  STCEntity       *entity;
 @property (assign)  CGPoint         waypoint;
 
 @property (assign)  CGPoint         currentPosition;

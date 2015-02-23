@@ -58,11 +58,12 @@
 #pragma mark Private
 
 - (void)tick:(ccTime) dt {
+    self.physicsWorld->Step(dt, 10, 10);
+    
     CGPoint position = self.position;
     CGPoint box2dPosition = ccp(position.x / PTM_RATIO, position.y / PTM_RATIO);
     self.physicsBody->SetTransform(b2Vec2(box2dPosition.x,box2dPosition.y), self.physicsBody->GetAngle());
 }
-
 
 - (void)configureCollisionBody {
     b2BodyDef physicsBody;
