@@ -14,27 +14,29 @@
 #import "STCEnemyB.h"
 #import "GLES-Render.h"
 #import "Constants.h"
+#import "MyContactListener.h"
 
 #import "CGGeometry+ZCExtension.h"
 
 @interface STCGameScene ()
-@property (nonatomic, assign)   GLESDebugDraw   *debugDraw;
+@property (nonatomic, assign)   GLESDebugDraw       *debugDraw;
+@property (nonatomic, assign)   MyContactListener   *myContactListener;
 
-@property (nonatomic, strong)   CCAction        *scoreFlashAction;
-@property (nonatomic, strong)   CCLabelBMFont   *playerHealthLabel;
-@property (nonatomic, strong)   STCPlayerShip   *playerShip;
-@property (nonatomic, strong)   CCAction        *gameOverPulse;
-@property (nonatomic, strong)   CCLabelTTF      *gameOverLabel;
-@property (nonatomic, strong)   CCLabelTTF      *tapScreenLabel;
+@property (nonatomic, strong)   CCAction            *scoreFlashAction;
+@property (nonatomic, strong)   CCLabelBMFont       *playerHealthLabel;
+@property (nonatomic, strong)   STCPlayerShip       *playerShip;
+@property (nonatomic, strong)   CCAction            *gameOverPulse;
+@property (nonatomic, strong)   CCLabelTTF          *gameOverLabel;
+@property (nonatomic, strong)   CCLabelTTF          *tapScreenLabel;
 
-@property (nonatomic, assign)   CGSize          winSize;
-@property (nonatomic, assign)   CGPoint         deltaPoint;
-@property (nonatomic, assign)   CGFloat         bulletInterval;
-@property (nonatomic, assign)   NSTimeInterval  dt;
-@property (nonatomic, assign)   CGFloat         score;
-@property (nonatomic, assign)   NSInteger       gameState;
+@property (nonatomic, assign)   CGSize              winSize;
+@property (nonatomic, assign)   CGPoint             deltaPoint;
+@property (nonatomic, assign)   CGFloat             bulletInterval;
+@property (nonatomic, assign)   NSTimeInterval      dt;
+@property (nonatomic, assign)   CGFloat             score;
+@property (nonatomic, assign)   NSInteger           gameState;
 
-@property (nonatomic, assign)   b2World         *physicsWorld;
+@property (nonatomic, assign)   b2World             *physicsWorld;
 
 - (void)setupSceneLayer;
 - (void)setupUI;
@@ -69,19 +71,15 @@
 #pragma mark Initialization and Dealocation
 
 - (void)dealloc {
+    delete self.debugDraw;
+    self.debugDraw = NULL;
+    
+    delete self.myContactListener;
+    self.myContactListener = NULL;
+    
     delete self.physicsWorld;
     self.physicsWorld = NULL;
 }
-
-#if DEBUG
--(void) draw
-{
-    [super draw];
-    ccGLEnableVertexAttribs(kCCVertexAttribFlag_Position); kmGLPushMatrix();
-    self.physicsWorld  -> DrawDebugData();
-    kmGLPopMatrix();
-}
-#endif
 
 - (id)init {
     self = [super init];
@@ -140,6 +138,17 @@
 
 #pragma mark -
 #pragma mark Life Cycle
+
+#if DEBUG
+-(void) draw {
+    [super draw];
+    
+    ccGLEnableVertexAttribs(kCCVertexAttribFlag_Position);
+    kmGLPushMatrix();
+    self.physicsWorld -> DrawDebugData();
+    kmGLPopMatrix();
+}
+#endif
 
 - (void)update:(ccTime)delta {
     CGPoint newPoint = CGAddVectors(self.playerShip.position, self.deltaPoint);
@@ -238,6 +247,10 @@
     self.physicsWorld = new b2World(gravity);
     self.physicsWorld->DrawDebugData();
     
+    // Create contact listener
+    self.myContactListener = new MyContactListener();
+    self.physicsWorld->SetContactListener(self.myContactListener);
+    
     self.debugDraw = new GLESDebugDraw(PTM_RATIO);
     self.physicsWorld->SetDebugDraw(_debugDraw);
     uint32 flags = 0;
@@ -267,7 +280,7 @@
     CGSize size = self.winSize;
     
     CGSize backgroundSize = CGSizeMake(size.width, kSTCBarHeightSize);
-    ccColor4B backgroundColor = ccc4BFromccc4F(ccc4f(0.5, 0, 0.05, 1));
+    ccColor4B backgroundColor = ccc4BFromccc4F(ccc4f(0.0, 0, 0.05, 1));
     
     CCLayerColor *hudBarBackground = [CCLayerColor layerWithColor:backgroundColor
                                                             width:backgroundSize.width
@@ -287,8 +300,8 @@
     
     [self.hudLayerNode addChild:scoreLabel];
     
-    CCAction *scaleInAction = [CCScaleTo actionWithDuration:0.1 scale:0.1];
-    CCAction *scaleOutAction = [CCScaleTo actionWithDuration:0.1 scale:0.1];
+    CCAction *scaleInAction = [CCScaleTo actionWithDuration:0.1 scale:1.5];
+    CCAction *scaleOutAction = [CCScaleTo actionWithDuration:0.1 scale:1.0];
     CCSequence *flashAction = [CCSequence actionWithArray:@[scaleInAction, scaleOutAction]];
     CCAction *repeartAction = [CCRepeat actionWithAction:flashAction times:10];
     
@@ -380,8 +393,8 @@
     self.score += increment;
     CCLabelTTF *scoreLabel = (CCLabelTTF *)[self.hudLayerNode getChildByTag:kSTCNodeNameScoreLabel];
     scoreLabel.string = [NSString stringWithFormat:@"Score: %1.0f", self.score];
+    
     [scoreLabel stopAllActions];
-//    [scoreLabel removeAllActions];
     [scoreLabel runAction:self.scoreFlashAction];
 }
 

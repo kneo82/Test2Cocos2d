@@ -25,6 +25,12 @@
 #pragma mark -
 #pragma mark Initialization and Dealocation
 
+- (void)dealloc {
+    if (self.physicsBody != NULL && self.physicsWorld != NULL) {
+        self.physicsWorld->DestroyBody(self.physicsBody);
+    }
+}
+
 - (instancetype)initWithPosition:(CGPoint)position physicsWorld:(b2World *)world {
     CCSprite *sprite = [[self class] generateSprite];
     

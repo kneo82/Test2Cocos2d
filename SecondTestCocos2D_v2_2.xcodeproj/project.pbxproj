@@ -135,6 +135,7 @@
 		55C4FFF91A974C67003C22A7 /* CCSpriteBatchNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C4FFF81A974C67003C22A7 /* CCSpriteBatchNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C4FFFC1A974C67003C22A7 /* CCSpriteFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C4FFFB1A974C67003C22A7 /* CCSpriteFrame.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C4FFFF1A974C67003C22A7 /* CCSpriteFrameCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C4FFFE1A974C67003C22A7 /* CCSpriteFrameCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		55D1CBBE1A9B8396004979E7 /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55D1CBBD1A9B8396004979E7 /* MyContactListener.mm */; };
 		849F60061A97E15E0013BD81 /* thirteen_pixel_fonts.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 849F60051A97E15E0013BD81 /* thirteen_pixel_fonts.ttf */; };
 		849F60081A97E58A0013BD81 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849F60071A97E58A0013BD81 /* Images.xcassets */; };
 		849F63EF1A97F3F50013BD81 /* Box2DConfig.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 849F638A1A97F3F50013BD81 /* Box2DConfig.cmake */; };
@@ -471,6 +472,8 @@
 		55C4FFFB1A974C67003C22A7 /* CCSpriteFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCSpriteFrame.m; path = libs/cocos2d/CCSpriteFrame.m; sourceTree = "<group>"; };
 		55C4FFFD1A974C67003C22A7 /* CCSpriteFrameCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCSpriteFrameCache.h; path = libs/cocos2d/CCSpriteFrameCache.h; sourceTree = "<group>"; };
 		55C4FFFE1A974C67003C22A7 /* CCSpriteFrameCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCSpriteFrameCache.m; path = libs/cocos2d/CCSpriteFrameCache.m; sourceTree = "<group>"; };
+		55D1CBBC1A9B8396004979E7 /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactListener.h; sourceTree = "<group>"; };
+		55D1CBBD1A9B8396004979E7 /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyContactListener.mm; sourceTree = "<group>"; };
 		849F60051A97E15E0013BD81 /* thirteen_pixel_fonts.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = thirteen_pixel_fonts.ttf; sourceTree = "<group>"; };
 		849F60071A97E58A0013BD81 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		849F63891A97F3F50013BD81 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -839,6 +842,8 @@
 		55C4FF2E1A974C66003C22A7 /* SecondTestCocos2D_v2_2 */ = {
 			isa = PBXGroup;
 			children = (
+				55D1CBBC1A9B8396004979E7 /* MyContactListener.h */,
+				55D1CBBD1A9B8396004979E7 /* MyContactListener.mm */,
 				84A591241A9A788B00CA9C37 /* GLES-Render.h */,
 				84A591251A9A788B00CA9C37 /* GLES-Render.mm */,
 				84A58EBF1A99CD9400CA9C37 /* AISteering.h */,
@@ -1383,6 +1388,7 @@
 				55C400A71A974C68003C22A7 /* mat3.c in Sources */,
 				55C400C11A974C68003C22A7 /* AppDelegate.m in Sources */,
 				849F63FB1A97F3F50013BD81 /* b2EdgeShape.cpp in Sources */,
+				55D1CBBE1A9B8396004979E7 /* MyContactListener.mm in Sources */,
 				55C400311A974C67003C22A7 /* CCES2Renderer.m in Sources */,
 				849F64031A97F3F50013BD81 /* b2Body.cpp in Sources */,
 				55C4FFA31A974C67003C22A7 /* CCLabelAtlas.m in Sources */,
