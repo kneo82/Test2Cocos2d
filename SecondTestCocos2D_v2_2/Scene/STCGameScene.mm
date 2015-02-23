@@ -17,9 +17,9 @@
 
 #import "CGGeometry+ZCExtension.h"
 
-@interface STCGameScene () {
-    GLESDebugDraw *_debugDraw;
-}
+@interface STCGameScene ()
+@property (nonatomic, assign)   GLESDebugDraw   *debugDraw;
+
 @property (nonatomic, strong)   CCAction        *scoreFlashAction;
 @property (nonatomic, strong)   CCLabelBMFont   *playerHealthLabel;
 @property (nonatomic, strong)   STCPlayerShip   *playerShip;
@@ -41,6 +41,7 @@
 - (void)setupEntitys;
 - (void)increaseScoreBy:(float)increment;
 - (void)restartGame;
+- (void)setupPhysicsWorld;
 
 @end
 
@@ -88,21 +89,8 @@
     if (self) {
         self.touchEnabled = YES;
         self.winSize = [CCDirector sharedDirector].winSize;
-        
-        b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
-        self.physicsWorld = new b2World(gravity);
-        self.physicsWorld->DrawDebugData();
-        
-        _debugDraw = new GLESDebugDraw(PTM_RATIO);
-        self.physicsWorld->SetDebugDraw(_debugDraw);
-        uint32 flags = 0;
-        flags += b2Draw::e_shapeBit;
-        flags += b2Draw::e_jointBit;
-        flags += b2Draw::e_aabbBit;
-        flags += b2Draw::e_pairBit;
-        flags += b2Draw::e_centerOfMassBit;
-        _debugDraw->SetFlags(flags);
-        
+
+        [self setupPhysicsWorld];
         
         [self setupSceneLayer];
         [self setupUI];
@@ -244,6 +232,22 @@
 
 #pragma mark -
 #pragma mark Private
+
+- (void)setupPhysicsWorld {
+    b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
+    self.physicsWorld = new b2World(gravity);
+    self.physicsWorld->DrawDebugData();
+    
+    self.debugDraw = new GLESDebugDraw(PTM_RATIO);
+    self.physicsWorld->SetDebugDraw(_debugDraw);
+    uint32 flags = 0;
+    flags += b2Draw::e_shapeBit;
+    flags += b2Draw::e_jointBit;
+    flags += b2Draw::e_aabbBit;
+    flags += b2Draw::e_pairBit;
+    flags += b2Draw::e_centerOfMassBit;
+    self.debugDraw->SetFlags(flags);
+}
 
 - (void)setupSceneLayer {
     self.playerLayerNode = [CCLayer node];

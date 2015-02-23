@@ -112,6 +112,7 @@ static CCAction *moveBackAction = nil;
         
         [self configureCollisionBody];
         
+        [self schedule:@selector(tick:)];
 //        [self scheduleUpdate];
     }
     
@@ -142,6 +143,12 @@ static CCAction *moveBackAction = nil;
 #pragma mark -
 #pragma mark Physics and Collision
 
+- (void)tick:(ccTime) dt {
+    CGPoint position = self.position;
+    CGPoint box2dPosition = ccp(position.x / PTM_RATIO, position.y / PTM_RATIO);
+    self.physicsBody->SetTransform(b2Vec2(box2dPosition.x,box2dPosition.y), self.physicsBody->GetAngle());
+}
+
 - (void)configureCollisionBody {
     b2BodyDef physicsBody;
     physicsBody.type = b2_dynamicBody;
@@ -149,7 +156,17 @@ static CCAction *moveBackAction = nil;
     
     physicsBody.userData = (__bridge void *)self;
     
-    self.physicsWorld->CreateBody(&physicsBody);
+    self.physicsBody = self.physicsWorld->CreateBody(&physicsBody);
+    
+    b2PolygonShape spriteShape;
+    spriteShape.SetAsBox(self.contentSize.width/PTM_RATIO/2, self.contentSize.height/PTM_RATIO/2);
+    
+    b2FixtureDef spriteShapeDef;
+    spriteShapeDef.shape = &spriteShape;
+    spriteShapeDef.density = 10.0;
+    spriteShapeDef.isSensor = true;
+    self.physicsBody->CreateFixture(&spriteShapeDef);
+    
     
     /*
     self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.frame.size];
