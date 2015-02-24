@@ -14,11 +14,14 @@
 @property (nonatomic, assign)   NSInteger   damageTakenPerShot;
 @property (nonatomic, strong)   NSString    *healthMeterText;
 
-@property (nonatomic, readonly) CCAction *damageAction;
-@property (nonatomic, readonly) CCAction *hitLeftAction;
-@property (nonatomic, readonly) CCAction *hitRightAction;
-@property (nonatomic, readonly) CCAction *moveBackAction;
+@property (nonatomic, readonly) CCAction    *damageAction;
+@property (nonatomic, readonly) CCAction    *hitLeftAction;
+@property (nonatomic, readonly) CCAction    *hitRightAction;
+@property (nonatomic, readonly) CCAction    *moveBackAction;
+@property (nonatomic, readonly) CCAction    *scoreLabelAction;
 
-@property (strong, nonatomic)    AISteering *aiSteering;
+@property (strong, nonatomic)   AISteering  *aiSteering;
+
+@property (nonatomic, readonly) CCLabelTTF  *scoreLable;
 
 @end

@@ -113,6 +113,42 @@
                                          ]];
 }
 
+- (CCAction *)scoreLabelAction {
+    CCScaleTo *scaleOffAction = [CCScaleTo actionWithDuration:0 scale:0];
+    CCFadeTo *fadeOffAction = [CCFadeOut actionWithDuration:0];
+    
+    CCScaleTo *scaleOnAction = [CCScaleTo actionWithDuration:0.5 scale:1];
+    CCFadeTo *fadeOnAction = [CCFadeTo actionWithDuration:0.5 opacity:255];
+    
+    CCMoveBy *moveAction = [CCMoveBy actionWithDuration:0.5 position:ccp(0, 20)];
+    
+    CCSpawn *offLableAction = [CCSpawn actionWithArray:@[scaleOffAction, fadeOffAction]];
+    CCSpawn *onLableAction = [CCSpawn actionWithArray:@[scaleOnAction, fadeOnAction, moveAction]];
+    
+    CCSequence *showAction = [CCSequence actionWithArray:@[offLableAction, onLableAction]];
+    
+    CCMoveBy *moveDisappearsAction = [CCMoveBy actionWithDuration:1 position:ccp(0, 40)];
+    CCFadeOut *fadeOurDisappearsAction  = [CCFadeOut actionWithDuration:1];
+    
+    CCSpawn *disappearsAction = [CCSpawn actionWithArray:@[moveDisappearsAction, fadeOurDisappearsAction]];
+    
+    CCAction *labelAction = [CCSequence actionWithArray:@[showAction, disappearsAction]];
+    
+    return labelAction;
+}
+
+- (CCLabelTTF *)scoreLable {
+    NSString *scoreText = [NSString stringWithFormat:@"%lu", (unsigned long)self.score];
+    CCLabelTTF *scorelabel = [CCLabelTTF labelWithString:scoreText fontName:kSTCScoreFontName fontSize:25];
+    scorelabel.color = ccc3(125, 255, 255);
+    scorelabel.position = self.position;
+    scorelabel.opacity = 0;
+    scorelabel.scale = 0;
+    
+    [scorelabel runAction:self.scoreLabelAction];
+    
+    return scorelabel;
+}
 
 #pragma mark -
 #pragma mark Life Cycle
@@ -193,6 +229,8 @@
     self.health -= self.damageTakenPerShot;
 
     if (self.health <= 0) {
+        [self.parent addChild:self.scoreLable];
+        
         self.health = self.maxHealth;
         [self changeScore];
 
