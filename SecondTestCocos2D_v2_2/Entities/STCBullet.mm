@@ -55,6 +55,17 @@
 //}
 
 #pragma mark -
+#pragma mark Public
+
+- (void)collidedWith:(STCEntity *)entity contact:(CGPoint)contactPosition {
+    if (entity.tag == kSTCNodeNameShipSprite) {
+        return;
+    }
+    
+    [self removeFromParent];
+}
+
+#pragma mark -
 #pragma mark Private
 
 - (void)tick:(ccTime) dt {
@@ -79,10 +90,11 @@
     
     b2FixtureDef ballShapeDef;
     ballShapeDef.shape = &circle;
-    ballShapeDef.density = 1.0f;
+    ballShapeDef.density = 10.0f;
     ballShapeDef.friction = 0.2f;
     ballShapeDef.restitution = 0.8f;
     self.physicsBody->CreateFixture(&ballShapeDef);
 }
+
 
 @end

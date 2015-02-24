@@ -11,6 +11,7 @@
 #import "Box2D.h"
 #import "Constants.h"
 #import "MyContactListener.h"
+#import "STCScoreProtocol.h"
 
 @interface STCEntity : CCSprite
 @property (nonatomic, assign)   b2World     *physicsWorld;
@@ -18,6 +19,8 @@
 @property (nonatomic, assign)   CGPoint     direction;
 @property (nonatomic ,assign)   CGFloat     health;
 @property (nonatomic, assign)   CGFloat     maxHealth;
+
+@property (nonatomic, weak)     id<STCScoreProtocol>    delegate;
 
 + (CCSprite *)generateSprite;
 - (instancetype)initWithPosition:(CGPoint)position physicsWorld:(b2World *)world;
@@ -32,6 +35,7 @@
  Called when a collision is detected so that some action can be taken e.g. reduce health or maybe collect a powerup
  @param body the physics body with which the physics body for this entity has collided
  */
-- (void)collidedWith:(STCEntity *)entity contact:(MyContact)contact;
+- (void)collidedWith:(STCEntity *)entity contact:(CGPoint)contactPosition;
+
 
 @end

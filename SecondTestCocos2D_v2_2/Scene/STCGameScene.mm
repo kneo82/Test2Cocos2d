@@ -104,6 +104,7 @@
 #pragma mark -
 #pragma mark Accessors
 
+
 #pragma mark -
 #pragma mark Touch Handle
 
@@ -203,8 +204,9 @@
             
             // Update the healthbar color and length based on the...urm...players health :)
             self.playerHealthLabel.string = [kSTCHealthBar substringToIndex:(self.playerShip.health / 100 * kSTCHealthBar.length)];
-            self.playerHealthLabel.color = ccc3(255 * 2.0f * (1.0f - self.playerShip.health / 100.0f),
-                                                255 * 2.0f * self.playerShip.health / 100.0f,
+            
+            self.playerHealthLabel.color = ccc3(255 * (1.0f - self.playerShip.health / 100.0f),
+                                                255 * self.playerShip.health / 100.0f,
                                                 0);
             
             // If the players health has dropped to <= 0 then set the game state to game over
@@ -260,15 +262,15 @@
     self.myContactListener = new MyContactListener();
     self.physicsWorld->SetContactListener(self.myContactListener);
     
-    self.debugDraw = new GLESDebugDraw(PTM_RATIO);
-    self.physicsWorld->SetDebugDraw(_debugDraw);
-    uint32 flags = 0;
-    flags += b2Draw::e_shapeBit;
-    flags += b2Draw::e_jointBit;
-    flags += b2Draw::e_aabbBit;
-    flags += b2Draw::e_pairBit;
-    flags += b2Draw::e_centerOfMassBit;
-    self.debugDraw->SetFlags(flags);
+//    self.debugDraw = new GLESDebugDraw(PTM_RATIO);
+//    self.physicsWorld->SetDebugDraw(_debugDraw);
+//    uint32 flags = 0;
+//    flags += b2Draw::e_shapeBit;
+//    flags += b2Draw::e_jointBit;
+//    flags += b2Draw::e_aabbBit;
+//    flags += b2Draw::e_pairBit;
+//    flags += b2Draw::e_centerOfMassBit;
+//    self.debugDraw->SetFlags(flags);
 }
 
 - (void)setupSceneLayer {
@@ -312,11 +314,12 @@
     CCAction *scaleInAction = [CCScaleTo actionWithDuration:0.1 scale:1.5];
     CCAction *scaleOutAction = [CCScaleTo actionWithDuration:0.1 scale:1.0];
     CCSequence *flashAction = [CCSequence actionWithArray:@[scaleInAction, scaleOutAction]];
-    CCAction *repeartAction = [CCRepeat actionWithAction:flashAction times:10];
+    CCAction *repeartAction = [CCRepeat actionWithAction:flashAction times:5];
     
     CCSequence *fulFlashAction = [CCSequence actionWithArray:@[repeartAction, scaleOutAction]];
     
     [scoreLabel runAction:fulFlashAction];
+    self.scoreFlashAction = fulFlashAction;
     
     self.playerHealthLabel = [CCLabelTTF labelWithString:kSTCHealthBar fontName:kSTCArialFontName fontSize:0];
     
@@ -391,6 +394,8 @@
                                                                                         self.winSize.height + 50)
                                                   physicsWorld:self.physicsWorld];
         
+        enemy.delegate = self;
+        
         [self.enemyLayerNode addChild:enemy];
     }
     
@@ -398,6 +403,8 @@
         CGPoint enemyPosition = ccp(CGFloatRandomInRange(50, self.winSize.width - 50), self.winSize.height + 50);
         STCEnemyB *enemy = [[STCEnemyB alloc] initWithPosition:enemyPosition
                                                   physicsWorld:self.physicsWorld];
+        
+        enemy.delegate = self;
         
         [self.enemyLayerNode addChild:enemy];
     }
@@ -436,7 +443,10 @@
 #pragma mark Physics Contact Delegate
 
 - (void)tick:(ccTime)dt {
+    NSMutableArray *contacts = [NSMutableArray array];
+    
     std::vector<MyContact>::iterator pos;
+    
     for(pos = self.myContactListener->_contacts.begin();
         pos != self.myContactListener->_contacts.end(); ++pos) {
         MyContact contact = *pos;
@@ -446,10 +456,25 @@
         if (bodyA->GetUserData() != NULL && bodyB->GetUserData() != NULL) {
             STCEntity *spriteA = (__bridge STCEntity *) bodyA->GetUserData();
             STCEntity *spriteB = (__bridge STCEntity *) bodyB->GetUserData();
-            
-            [spriteA collidedWith:spriteB contact:contact];
-            [spriteB collidedWith:spriteA contact:contact];
+
+            b2WorldManifold worldManifold;
+            contact.contact->GetWorldManifold(&worldManifold);
+            b2Vec2 pos = worldManifold.points[0];
+           
+            CGPoint position = ccp(pos.x * PTM_RATIO, pos.y * PTM_RATIO);
+
+            [contacts addObject:@[spriteA, spriteB, [NSValue valueWithCGPoint:position]]];
         }
+    }
+    
+    for (NSArray *item in contacts) {
+        STCEntity *spriteA = item[0];
+        STCEntity *spriteB = item[1];
+        CGPoint position = ((NSValue *)item[2]).CGPointValue;
+        
+        [spriteA collidedWith:spriteB contact:position];
+        [spriteB collidedWith:spriteA contact:position];
+
     }
 }
 

@@ -7,14 +7,18 @@
 //
 
 #import "STCEntity.h"
-
-@class AISteering;
+#import "AISteering.h"
 
 @interface STCEnemyA : STCEntity
 @property (nonatomic, assign)   NSInteger   score;
 @property (nonatomic, assign)   NSInteger   damageTakenPerShot;
 @property (nonatomic, strong)   NSString    *healthMeterText;
 
-@property (strong,nonatomic) AISteering *aiSteering;
+@property (nonatomic, readonly) CCAction *damageAction;
+@property (nonatomic, readonly) CCAction *hitLeftAction;
+@property (nonatomic, readonly) CCAction *hitRightAction;
+@property (nonatomic, readonly) CCAction *moveBackAction;
+
+@property (strong, nonatomic)    AISteering *aiSteering;
 
 @end

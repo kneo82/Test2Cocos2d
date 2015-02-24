@@ -28,8 +28,6 @@
 - (void)dealloc {
     if (self.physicsBody != NULL && self.physicsWorld != NULL) {
         self.physicsWorld->DestroyBody(self.physicsBody);
-        
-        NSLog(@"dealloc  %@", NSStringFromClass([self class]));
     }
 
     self.physicsBody = NULL;
@@ -64,7 +62,7 @@
     // Overridden by a subclass
 }
 
-- (void)collidedWith:(STCEntity *)entity contact:(MyContact)contact {
+- (void)collidedWith:(STCEntity *)entity contact:(CGPoint)contactPosition{
     // Overridden by a subclass
 }
 

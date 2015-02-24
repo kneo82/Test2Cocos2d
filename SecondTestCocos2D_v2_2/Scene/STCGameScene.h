@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "STCScoreProtocol.h"
 
-@interface STCGameScene : CCLayer
+@interface STCGameScene : CCLayer <STCScoreProtocol>
 
 @property (nonatomic, strong) CCLayer *playerLayerNode;
 @property (nonatomic, strong) CCLayer *hudLayerNode;

@@ -109,12 +109,11 @@
     self.physicsBody->CreateFixture(&ballShapeDef);
 }
 
-- (void)collidedWith:(STCEntity *)entity contact:(MyContact)contact {
-    
+- (void)collidedWith:(STCEntity *)entity contact:(CGPoint)contactPosition {
     if (entity.tag == kSTCNodeNameBullet) {
         return;
     }
-    self.health -= 5;
+    self.health -= 1;
     
     if (self.health < 0) {
         self.health = 0;

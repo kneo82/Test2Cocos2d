@@ -197,6 +197,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		55BE1C0E1A9CA5E400E20F03 /* STCScoreProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCScoreProtocol.h; sourceTree = "<group>"; };
 		55C400001A974C67003C22A7 /* CCTexture2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTexture2D.h; path = libs/cocos2d/CCTexture2D.h; sourceTree = "<group>"; };
 		55C400011A974C67003C22A7 /* CCTexture2D.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCTexture2D.m; path = libs/cocos2d/CCTexture2D.m; sourceTree = "<group>"; };
 		55C400031A974C67003C22A7 /* CCTextureAtlas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTextureAtlas.h; path = libs/cocos2d/CCTextureAtlas.h; sourceTree = "<group>"; };
@@ -851,6 +852,7 @@
 				84A0CF621A98AC4000E27AAA /* Constants.h */,
 				84A0CF691A992C1300E27AAA /* CGGeometry+ZCExtension.h */,
 				84A0CF6A1A992C1300E27AAA /* CGGeometry+ZCExtension.m */,
+				55BE1C0E1A9CA5E400E20F03 /* STCScoreProtocol.h */,
 				84A0CF5B1A98A3B700E27AAA /* Entities */,
 				55C400CD1A9755A6003C22A7 /* Scene */,
 				55C400BF1A974C68003C22A7 /* AppDelegate.h */,

@@ -7,7 +7,6 @@
 //
 
 #import "STCEnemyA.h"
-#import "AISteering.h"
 #import "STCGameScene.h"
 
 #import "Box2D.h"
@@ -16,9 +15,8 @@
 
 @interface STCEnemyA ()
 
-+ (void)loadSharedAssets;
-
 - (void)configureCollisionBody;
+- (void)changeScore;
 
 @end
 
@@ -26,11 +24,6 @@
 
 #pragma mark -
 #pragma mark Class Methods
-
-static CCAction *damageAction = nil;
-static CCAction *hitLeftAction = nil;
-static CCAction *hitRightAction = nil;
-static CCAction *moveBackAction = nil;
 
 + (CCSprite *)generateSprite {
     static CCSprite *sprite = nil;
@@ -45,30 +38,6 @@ static CCAction *moveBackAction = nil;
     });
     
     return sprite;
-}
-
-+ (void)loadSharedAssets {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        damageAction = [CCSequence actionWithArray:@[
-                                                     [CCTintBy actionWithDuration:0 red:255 green:0 blue:0],
-                                                     [CCTintBy actionWithDuration:1 red:255 green:255 blue:255]]
-                        ];
-        
-        hitLeftAction = [CCSequence actionWithArray:@[
-                                                      [CCRotateTo actionWithDuration:0.25 angle:15],
-                                                      [CCRotateTo actionWithDuration:0.5 angle:0]
-                                                      ]];
-        
-        hitRightAction = [CCSequence actionWithArray:@[
-                                                       [CCRotateTo actionWithDuration:0.25 angle:(-15)],
-                                                       [CCRotateTo actionWithDuration:0.5 angle:0]
-                                                      ]];
-        
-        moveBackAction = [CCSequence actionWithArray:@[
-                                                       [CCMoveBy actionWithDuration:0.25 position:ccp(0, 20)]
-                                                       ]];
-    });
 }
 
 #pragma mark -
@@ -91,7 +60,7 @@ static CCAction *moveBackAction = nil;
         
         CCLabelTTF *healthMeterNode = [CCLabelTTF labelWithString:self.healthMeterText
                                                          fontName:kSTCArialFontName
-                                                         fontSize:10];
+                                                         fontSize:15];
         
         healthMeterNode.tag = kSTCNodeNameEnemyHealthMeter;
         
@@ -106,15 +75,44 @@ static CCAction *moveBackAction = nil;
         self.score = 225;
         self.damageTakenPerShot = 5;
         
-        // Load any shared assets that this entity will share with other EnemyA instances
-        [STCEnemyA loadSharedAssets];
-        
         [self configureCollisionBody];
         [self schedule:@selector(tick:)];
     }
     
     return self;
 }
+
+#pragma mark -
+#pragma mark Accessors 
+
+- (CCAction *)damageAction {
+    return [CCSequence actionWithArray:@[
+                                         [CCTintTo actionWithDuration:0 red:255 green:0 blue:0],
+                                         [CCTintTo actionWithDuration:1 red:255 green:255 blue:255]]
+            ];
+
+}
+
+- (CCAction *)hitLeftAction {
+    return [CCSequence actionWithArray:@[
+                                         [CCRotateTo actionWithDuration:0.25 angle:15],
+                                         [CCRotateTo actionWithDuration:0.5 angle:0]
+                                         ]];
+}
+
+- (CCAction *)hitRightAction {
+    return  [CCSequence actionWithArray:@[
+                                          [CCRotateTo actionWithDuration:0.25 angle:(-15)],
+                                          [CCRotateTo actionWithDuration:0.5 angle:0]
+                                          ]];
+}
+
+- (CCAction *)moveBackAction {
+    return [CCSequence actionWithArray:@[
+                                         [CCMoveBy actionWithDuration:0.25 position:ccp(0, 20)]
+                                         ]];
+}
+
 
 #pragma mark -
 #pragma mark Life Cycle
@@ -134,7 +132,7 @@ static CCAction *moveBackAction = nil;
     CCLabelTTF *healthMeter = (CCLabelTTF *)[self getChildByTag:kSTCNodeNameEnemyHealthMeter];
 
     healthMeter.string = [self.healthMeterText substringToIndex:(self.health / 100 * _healthMeterText.length)];
-    healthMeter.color = ccc3(255 * 2.0 * (1.0 - self.health / 100.0), 255 * 2.0 * self.health / 100.0, 0);
+    healthMeter.color = ccc3(255 * (1.0 - self.health / 100.0), 255 * self.health / 100.0, 0);
 }
 
 #pragma mark -
@@ -156,58 +154,59 @@ static CCAction *moveBackAction = nil;
     physicsBody.userData = (__bridge void *)self;
     
     self.physicsBody = self.physicsWorld->CreateBody(&physicsBody);
-    
+
     b2PolygonShape spriteShape;
     spriteShape.SetAsBox(self.contentSize.width/PTM_RATIO/2, self.contentSize.height/PTM_RATIO/2);
     
+
+
     b2FixtureDef spriteShapeDef;
     spriteShapeDef.shape = &spriteShape;
-    spriteShapeDef.density = 10.0;
-    spriteShapeDef.isSensor = true;
+    spriteShapeDef.density = .00;
+    spriteShapeDef.friction = .0f;
+    spriteShapeDef.restitution = .0f;
+
     self.physicsBody->CreateFixture(&spriteShapeDef);
 }
-//
-//- (void)collidedWith:(b2BodyDef *)body contact:(SKPhysicsContact*)contact {
-//    
-//    // Get the contact point at which the bodies collided
-//    CGPoint localContactPoint = [self.parent convertPoint:contact.contactPoint toNode:self];
-//    
-//    // Remove all the current actions. Their current effect on the enemy ship will remain unchanged so the new action
-//    // will transition smoothly to the new action
-//    [self removeAllActions];
-//    
-//    // Depending on which side the enemy was hit, rotate the ship
-//    if (localContactPoint.x < 0) {
-//        [self runAction:hitLeftAction];
-//    } else {
-//        [self runAction:hitRightAction];
-//    }
-//    
-//    // Set up an action that will make the entity flash red with damage
-//    [self runAction:damageAction];
-//    
-//    // If the entity is moving down the screen then make the ship slow down by moving it back a little with an action
-//    if (self.aiSteering.currentDirection.y < 0)
-//        [self runAction:moveBackAction];
-//    
-//    // Reduce the health of the enemy ship
-//    self.health -= _damageTakenPerShot;
-//    
-//    // If the enemies health is now below 0 then add the enemyDeath emitter to the scene and reset the enemies position to off screen
-//    if (self.health <= 0) {
-//        
-//        // Reference the main scene
-//        MyScene *mainScene = (MyScene*)self.scene;
-//        
-//        self.health = self.maxHealth;
-//        [mainScene increaseScoreBy:_score];
-//        
-//        // Now position the entity above the top of the screen so it can fly into view
-//        self.position = CGPointMake(RandomFloatRange(100, self.scene.size.width - 100),
-//                                    self.scene.size.height + 50);
-//        
-//    }
-//    
-//}
+
+- (void)collidedWith:(STCEntity *)entity contact:(CGPoint)contactPosition {
+    if (entity.tag == kSTCNodeNameEnemy || entity.tag == kSTCNodeNameShipSprite) {
+        return;
+    }
+    
+    CGPoint localContactPoint = [self convertToNodeSpace:contactPosition];
+
+    [self stopAllActions];
+
+    if (localContactPoint.x < 0) {
+        [self runAction:self.hitLeftAction];
+    } else {
+        [self runAction:self.hitRightAction];
+    }
+    
+    [self runAction:self.damageAction];
+    
+    if (self.aiSteering.currentDirection.y < 0) {
+        [self runAction:self.moveBackAction];
+    }
+
+    self.health -= self.damageTakenPerShot;
+
+    if (self.health <= 0) {
+        self.health = self.maxHealth;
+        [self changeScore];
+
+        self.position = ccp(CGFloatRandomInRange(100, self.parent.contentSize.width - 100),
+                                    self.parent.contentSize.height + 50);
+        
+    }
+
+}
+
+- (void)changeScore {
+    if ([self.delegate respondsToSelector:@selector(increaseScoreBy:)]) {
+        [self.delegate increaseScoreBy:self.score];
+    }
+}
 
 @end
