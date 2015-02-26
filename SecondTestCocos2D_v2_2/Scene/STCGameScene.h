@@ -16,6 +16,7 @@
 @property (nonatomic, strong) CCLayer *hudLayerNode;
 @property (nonatomic, strong) CCLayer *bulletLayerNode;
 @property (nonatomic, strong) CCLayer *enemyLayerNode;
+@property (nonatomic, strong) CCLayer *starsLayerNode;
 
 + (CCScene *)scene;
 

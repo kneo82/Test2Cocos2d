@@ -38,12 +38,15 @@
 
 @property (nonatomic, assign)   b2World             *physicsWorld;
 
+@property (nonatomic, strong)   CCParticleSystem    *emiter;
+
 - (void)setupSceneLayer;
 - (void)setupUI;
 - (void)setupEntitys;
 - (void)increaseScoreBy:(float)increment;
 - (void)restartGame;
 - (void)setupPhysicsWorld;
+- (void)setupParticleSystem;
 
 @end
 
@@ -96,6 +99,8 @@
         
         [self scheduleUpdate];
         [self schedule:@selector(tick:)];
+        
+        [self setupParticleSystem];
     }
     
     return self;
@@ -220,13 +225,8 @@
             // If the game over message has not been added to the scene yet then add it
             
             if (!self.gameOverLabel.parent) {
-//                 Remove the bullets, enemites and player from the scene as the game is over
+                // Remove the bullets, enemites and player from the scene as the game is over
                 [self.bulletLayerNode removeAllChildren];
-//                [self.enemyLayerNode removeAllChildrenWithCleanup:YES];
-//                for (STCEntity *node in self.enemyLayerNode.children) {
-//                    self.physicsWorld->DestroyBody(node.physicsBody);
-//                }
-                
                 [self.enemyLayerNode removeAllChildrenWithCleanup:YES];
                 
                 [self.playerShip removeFromParent];
@@ -248,6 +248,40 @@
 
 #pragma mark -
 #pragma mark Public
+
+- (CCParticleSystem *)starfieldEmitterNodeWithSpeed:(float)speed
+                                           lifetime:(float)lifetime
+                                              scale:(float)scale
+                                       emissionRate:(float)emissionRate
+                                              color:(ccColor4F)color
+{
+//    NSArray *stars = @[@"✶", @"✬", @"✲", @"✷", @"✦", @"☆", @"✺", @"✡"];
+    CCLabelTTF *star = [CCLabelTTF labelWithString:@"✦" fontName:@"Helvetica" fontSize:80.0f];
+    CCTexture2D *texture = star.texture;
+    
+    CCParticleSystem *emitterNode = [CCParticleSnow node];
+    emitterNode.texture = texture;
+    emitterNode.emissionRate = emissionRate;
+    emitterNode.startColor = color;
+    emitterNode.startColorVar = ccc4f(0.3, 0.3, 0.3, 1);
+    emitterNode.life = lifetime;
+    emitterNode.speed = speed;
+
+    emitterNode.scale = scale;
+    emitterNode.startSizeVar = 10;
+    
+    emitterNode.position = CGPointMake(self.winSize.width / 2, self.winSize.height);
+    
+    emitterNode.posVar = CGPointMake(CGRectGetMaxX(self.boundingBox), 0);
+    
+    CCTintBy *tinByOn = [CCTintBy actionWithDuration:.5 red:0.3 green:0.3 blue:0.3];
+    CCTintBy *tinByOff = [CCTintBy actionWithDuration:.5 red:-0.3 green:-0.3 blue:-0.3];
+    CCSequence *tinAction = [CCSequence actionWithArray:@[tinByOn, tinByOff]];
+    CCRepeatForever *repeatAction = [CCRepeatForever actionWithAction:tinAction];
+    [texture runAction:repeatAction];
+
+    return emitterNode;
+}
 
 #pragma mark -
 #pragma mark Private
@@ -279,17 +313,31 @@
     
     self.hudLayerNode = [CCLayer node];
     [self addChild:self.hudLayerNode];
+    
+    self.starsLayerNode = [CCLayer node];
+    [self addChild:self.starsLayerNode];
 
     self.bulletLayerNode = [CCLayer node];
     [self addChild:self.bulletLayerNode];
     
     self.enemyLayerNode = [CCLayer node];
     [self addChild:self.enemyLayerNode];
+    
+}
+
+- (void)setupParticleSystem {
+    CCParticleSystem *star = [self starfieldEmitterNodeWithSpeed:24
+                                                        lifetime:(self.contentSize.height / 23)
+                                                           scale:1
+                                                    emissionRate:2
+                                                           color:ccc4f(.7, .7, .7, 1)];
+    
+    [self.starsLayerNode addChild:star];
 }
 
 - (void)setupUI {
     CGSize size = self.winSize;
-    
+
     CGSize backgroundSize = CGSizeMake(size.width, kSTCBarHeightSize);
     ccColor4B backgroundColor = ccc4BFromccc4F(ccc4f(0.0, 0, 0.05, 1));
     

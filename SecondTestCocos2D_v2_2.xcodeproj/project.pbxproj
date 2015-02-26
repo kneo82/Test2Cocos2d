@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55C227561A9DD654007AD2AE /* snow.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C227551A9DD654007AD2AE /* snow.png */; };
+		55C227581A9DE2D1007AD2AE /* rainDrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C227571A9DE2D1007AD2AE /* rainDrop.png */; };
+		55C2275A1A9DF44D007AD2AE /* Rain.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55C227591A9DF44D007AD2AE /* Rain.plist */; };
 		55C400021A974C67003C22A7 /* CCTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400011A974C67003C22A7 /* CCTexture2D.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400051A974C67003C22A7 /* CCTextureAtlas.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400041A974C67003C22A7 /* CCTextureAtlas.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400081A974C67003C22A7 /* CCTextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400071A974C67003C22A7 /* CCTextureCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -198,6 +201,9 @@
 
 /* Begin PBXFileReference section */
 		55BE1C0E1A9CA5E400E20F03 /* STCScoreProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCScoreProtocol.h; sourceTree = "<group>"; };
+		55C227551A9DD654007AD2AE /* snow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snow.png; sourceTree = "<group>"; };
+		55C227571A9DE2D1007AD2AE /* rainDrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rainDrop.png; sourceTree = "<group>"; };
+		55C227591A9DF44D007AD2AE /* Rain.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Rain.plist; sourceTree = "<group>"; };
 		55C400001A974C67003C22A7 /* CCTexture2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTexture2D.h; path = libs/cocos2d/CCTexture2D.h; sourceTree = "<group>"; };
 		55C400011A974C67003C22A7 /* CCTexture2D.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCTexture2D.m; path = libs/cocos2d/CCTexture2D.m; sourceTree = "<group>"; };
 		55C400031A974C67003C22A7 /* CCTextureAtlas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTextureAtlas.h; path = libs/cocos2d/CCTextureAtlas.h; sourceTree = "<group>"; };
@@ -869,6 +875,9 @@
 		55C4FF2F1A974C66003C22A7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				55C227591A9DF44D007AD2AE /* Rain.plist */,
+				55C227571A9DE2D1007AD2AE /* rainDrop.png */,
+				55C227551A9DD654007AD2AE /* snow.png */,
 				849F60041A97E14E0013BD81 /* Fonts */,
 				55C4FF301A974C66003C22A7 /* Default.png */,
 				55C4FF321A974C66003C22A7 /* Default@2x.png */,
@@ -1301,11 +1310,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				849F60061A97E15E0013BD81 /* thirteen_pixel_fonts.ttf in Resources */,
+				55C2275A1A9DF44D007AD2AE /* Rain.plist in Resources */,
 				55C4009F1A974C68003C22A7 /* ChangeLog in Resources */,
 				849F63EF1A97F3F50013BD81 /* Box2DConfig.cmake in Resources */,
 				55C4FF331A974C66003C22A7 /* Default@2x.png in Resources */,
 				849F63F01A97F3F50013BD81 /* CMakeLists.txt in Resources */,
 				55C4FF311A974C66003C22A7 /* Default.png in Resources */,
+				55C227581A9DE2D1007AD2AE /* rainDrop.png in Resources */,
+				55C227561A9DD654007AD2AE /* snow.png in Resources */,
 				55C4FF461A974C66003C22A7 /* iTunesArtwork in Resources */,
 				849F60081A97E58A0013BD81 /* Images.xcassets in Resources */,
 				55C4FF371A974C66003C22A7 /* Default-Landscape~ipad.png in Resources */,
