@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		55C35A371A9F32E000800BA7 /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55C35A361A9F32E000800BA7 /* MyContactListener.mm */; };
+		55C35A3D1A9F346300800BA7 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55C35A3C1A9F346300800BA7 /* GLES-Render.mm */; };
 		55C400021A974C67003C22A7 /* CCTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400011A974C67003C22A7 /* CCTexture2D.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400051A974C67003C22A7 /* CCTextureAtlas.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400041A974C67003C22A7 /* CCTextureAtlas.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400081A974C67003C22A7 /* CCTextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400071A974C67003C22A7 /* CCTextureCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -147,6 +148,8 @@
 /* Begin PBXFileReference section */
 		55C35A351A9F32A900800BA7 /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactListener.h; sourceTree = "<group>"; };
 		55C35A361A9F32E000800BA7 /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyContactListener.mm; sourceTree = "<group>"; };
+		55C35A3B1A9F346300800BA7 /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
+		55C35A3C1A9F346300800BA7 /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		55C400001A974C67003C22A7 /* CCTexture2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTexture2D.h; path = libs/cocos2d/CCTexture2D.h; sourceTree = "<group>"; };
 		55C400011A974C67003C22A7 /* CCTexture2D.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCTexture2D.m; path = libs/cocos2d/CCTexture2D.m; sourceTree = "<group>"; };
 		55C400031A974C67003C22A7 /* CCTextureAtlas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTextureAtlas.h; path = libs/cocos2d/CCTextureAtlas.h; sourceTree = "<group>"; };
@@ -454,6 +457,8 @@
 		55C35A341A9F329C00800BA7 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				55C35A3B1A9F346300800BA7 /* GLES-Render.h */,
+				55C35A3C1A9F346300800BA7 /* GLES-Render.mm */,
 				55C35A351A9F32A900800BA7 /* MyContactListener.h */,
 				55C35A361A9F32E000800BA7 /* MyContactListener.mm */,
 			);
@@ -987,6 +992,7 @@
 				55C400A91A974C68003C22A7 /* mat4.c in Sources */,
 				55C35A371A9F32E000800BA7 /* MyContactListener.mm in Sources */,
 				55C4FF851A974C66003C22A7 /* ccDeprecated.m in Sources */,
+				55C35A3D1A9F346300800BA7 /* GLES-Render.mm in Sources */,
 				55C400401A974C67003C22A7 /* CCDirectorMac.m in Sources */,
 				55C4FF9A1A974C67003C22A7 /* ccGLStateCache.m in Sources */,
 				55C4006C1A974C68003C22A7 /* TransformUtils.m in Sources */,
