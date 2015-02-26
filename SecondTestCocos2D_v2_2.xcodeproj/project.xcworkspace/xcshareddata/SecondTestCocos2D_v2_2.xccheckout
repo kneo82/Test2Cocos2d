@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D3DE1300-1EA1-46AC-880B-76746B19397F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SecondTestCocos2D_v2_2</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1F11B8DD63A3A446754C8E492291C46DF2FB93AD</key>
+		<string>https://github.com/kneo82/Test2Cocos2d.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SecondTestCocos2D_v2_2.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1F11B8DD63A3A446754C8E492291C46DF2FB93AD</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/kneo82/Test2Cocos2d.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1F11B8DD63A3A446754C8E492291C46DF2FB93AD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1F11B8DD63A3A446754C8E492291C46DF2FB93AD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SecondTestCocos2D_v2_2</string>
+		</dict>
+	</array>
+</dict>
+</plist>
