@@ -273,12 +273,6 @@
     emitterNode.position = CGPointMake(self.winSize.width / 2, self.winSize.height);
     
     emitterNode.posVar = CGPointMake(CGRectGetMaxX(self.boundingBox), 0);
-    
-    CCTintBy *tinByOn = [CCTintBy actionWithDuration:.5 red:0.3 green:0.3 blue:0.3];
-    CCTintBy *tinByOff = [CCTintBy actionWithDuration:.5 red:-0.3 green:-0.3 blue:-0.3];
-    CCSequence *tinAction = [CCSequence actionWithArray:@[tinByOn, tinByOff]];
-    CCRepeatForever *repeatAction = [CCRepeatForever actionWithAction:tinAction];
-    [texture runAction:repeatAction];
 
     return emitterNode;
 }
