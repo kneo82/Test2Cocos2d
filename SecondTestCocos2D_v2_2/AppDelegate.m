@@ -85,6 +85,7 @@
 							   numberOfSamples:0];
 	
 	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+
 //	director_.wantsFullScreenLayout = YES;
 //    director_.edgesForExtendedLayout = UIRectEdgeAll; //  wantsFullScreenLayout = YES;
 	

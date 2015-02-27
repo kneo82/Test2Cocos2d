@@ -119,7 +119,7 @@
 		55C400BE1A974C68003C22A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400BD1A974C68003C22A7 /* main.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400C11A974C68003C22A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400C01A974C68003C22A7 /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400C71A974C68003C22A7 /* IntroLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400C61A974C68003C22A7 /* IntroLayer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		55C400D01A9755D1003C22A7 /* STCGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400CF1A9755D1003C22A7 /* STCGameScene.m */; };
+		55C400D01A9755D1003C22A7 /* STCGameScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55C400CF1A9755D1003C22A7 /* STCGameScene.mm */; };
 		55C4FF1B1A974C66003C22A7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C4FF1A1A974C66003C22A7 /* QuartzCore.framework */; };
 		55C4FF1D1A974C66003C22A7 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C4FF1C1A974C66003C22A7 /* OpenGLES.framework */; };
 		55C4FF1F1A974C66003C22A7 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C4FF1E1A974C66003C22A7 /* OpenAL.framework */; };
@@ -432,7 +432,7 @@
 		55C400C51A974C68003C22A7 /* IntroLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroLayer.h; sourceTree = "<group>"; };
 		55C400C61A974C68003C22A7 /* IntroLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroLayer.m; sourceTree = "<group>"; };
 		55C400CE1A9755D1003C22A7 /* STCGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCGameScene.h; sourceTree = "<group>"; };
-		55C400CF1A9755D1003C22A7 /* STCGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCGameScene.m; sourceTree = "<group>"; };
+		55C400CF1A9755D1003C22A7 /* STCGameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = STCGameScene.mm; sourceTree = "<group>"; };
 		55C4FF171A974C66003C22A7 /* SecondTestCocos2D_v2_2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecondTestCocos2D_v2_2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C4FF1A1A974C66003C22A7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		55C4FF1C1A974C66003C22A7 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -977,7 +977,7 @@
 			isa = PBXGroup;
 			children = (
 				55C400CE1A9755D1003C22A7 /* STCGameScene.h */,
-				55C400CF1A9755D1003C22A7 /* STCGameScene.m */,
+				55C400CF1A9755D1003C22A7 /* STCGameScene.mm */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1332,7 +1332,7 @@
 				55C4006C1A974C68003C22A7 /* TransformUtils.m in Sources */,
 				55C4FFB91A974C67003C22A7 /* CCNode+Debug.m in Sources */,
 				55C4FF941A974C67003C22A7 /* ccFPSImages.m in Sources */,
-				55C400D01A9755D1003C22A7 /* STCGameScene.m in Sources */,
+				55C400D01A9755D1003C22A7 /* STCGameScene.mm in Sources */,
 				55C35AC61A9F35F200800BA7 /* b2PolygonAndCircleContact.cpp in Sources */,
 				55C4001A1A974C67003C22A7 /* CCTMXXMLParser.m in Sources */,
 				55C35ABA1A9F35F200800BA7 /* b2ContactManager.cpp in Sources */,
