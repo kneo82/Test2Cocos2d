@@ -26,6 +26,7 @@
 - (void)setupSprites;
 - (void)setupPhysics;
 - (void)bodyWithCircleForSprite:(CCSprite *)sprite;
+- (void)bodyWithRectangleForSprite:(CCSprite *)sprite;
 
 @end
 
@@ -138,29 +139,59 @@
         CCSprite *sprite = (__bridge CCSprite *)body->GetUserData();
         
         b2Vec2 position = body->GetPosition();
-        
-        sprite.position = ccp(position.x * PTM_RATIO, position.y * PTM_RATIO);
-        sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle());
-        
-        body = body->GetNext();
+        CGPoint spritePosition = ccp(position.x * PTM_RATIO, position.y * PTM_RATIO);
+
+        if (spritePosition.x < -self.winSize.width
+            || spritePosition.y < -self.winSize.height
+            || spritePosition.x > 2 * self.winSize.width
+            || spritePosition.y > 2 * self.winSize.height)
+        {
+            b2Body *nextBody = body->GetNext();
+
+            self.physicsWorld->DestroyBody(body);
+            [sprite removeFromParent];
+            body = nextBody;
+        } else {
+            sprite.position = spritePosition;
+            sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle());
+            body = body->GetNext();
+        }
     }
-    
-    
-//    b2Body *physicsBody = (b2Body *)self.circle.userData;
-//    b2Vec2 position = physicsBody->GetPosition();
-//    
-//    self.circle.position = ccp(position.x * PTM_RATIO, position.y * PTM_RATIO);
-//    self.circle.rotation = CC_RADIANS_TO_DEGREES(self.physicsBody->GetAngle());
-    
-//    CGPoint position = self.position;
-//    CGPoint box2dPosition = ccp(position.x / PTM_RATIO, position.y / PTM_RATIO);
-//    self.physicsBody->SetTransform(b2Vec2(box2dPosition.x,box2dPosition.y), self.physicsBody->GetAngle());
 }
 
 - (void)setupPhysics {
     b2Vec2 gravity = b2Vec2(0.0f, -1.0f);
     self.physicsWorld = new b2World(gravity);
     self.physicsWorld->DrawDebugData();
+    
+    //************** Physic border around screan *******************//
+    
+    // for the screenBorder body we'll need these values
+    CGSize screenSize = self.winSize;
+    float widthInMeters = screenSize.width / PTM_RATIO;
+    float heightInMeters = screenSize.height / PTM_RATIO;
+    b2Vec2 lowerLeftCorner = b2Vec2(0, 0);
+    b2Vec2 lowerRightCorner = b2Vec2(widthInMeters, 0);
+    b2Vec2 upperLeftCorner = b2Vec2(0, heightInMeters);
+    b2Vec2 upperRightCorner = b2Vec2(widthInMeters, heightInMeters);
+    
+    // static container body, with the collisions at screen borders
+    b2BodyDef screenBorderDef;
+    screenBorderDef.position.Set(0, 0);
+    b2Body* screenBorderBody = self.physicsWorld->CreateBody(&screenBorderDef);
+    b2EdgeShape screenBorderShape;
+    
+    // Create fixtures for the four borders (the border shape is re-used)
+    screenBorderShape.Set(lowerLeftCorner, lowerRightCorner);
+    screenBorderBody->CreateFixture(&screenBorderShape, 0);
+    screenBorderShape.Set(lowerRightCorner, upperRightCorner);
+    screenBorderBody->CreateFixture(&screenBorderShape, 0);
+    screenBorderShape.Set(upperRightCorner, upperLeftCorner);
+    screenBorderBody->CreateFixture(&screenBorderShape, 0);
+    screenBorderShape.Set(upperLeftCorner, lowerLeftCorner);
+    screenBorderBody->CreateFixture(&screenBorderShape, 0);
+    
+    //************************************************************//
     
     _debugDraw = new GLESDebugDraw(PTM_RATIO);
     self.physicsWorld->SetDebugDraw(_debugDraw);
@@ -174,11 +205,12 @@
 }
 
 - (void)setupSprites {
-    CCSprite *square = [CCSprite spriteWithFile:@"square@2x.png"];
+    CCSprite *square = [CCSprite spriteWithFile:@"square.png"];
     square.position = ccp(self.winSize.width * 0.25, self.winSize.height * 0.50);
     self.square = square;
     
     [self addChild:square];
+    [self bodyWithRectangleForSprite:square];
     
     CCSprite *circle = [CCSprite spriteWithFile:@"circle.png"];
     circle.position = ccp(self.winSize.width * 0.5, self.winSize.height * 0.50);
@@ -192,6 +224,14 @@
     self.triangle = triangle;
     
     [self addChild:triangle];
+    
+    CGMutablePathRef trianglePath = CGPathCreateMutable();
+    CGPathMoveToPoint(trianglePath, nil, -triangle.contentSize.width / 2, -triangle.contentSize.height / 2);
+    CGPathAddLineToPoint(trianglePath, nil, triangle.contentSize.width / 2, -triangle.contentSize.height / 2);
+    CGPathAddLineToPoint(trianglePath, nil, 0, triangle.contentSize.height / 2);
+    CGPathAddLineToPoint(trianglePath, nil, -triangle.contentSize.width / 2, -triangle.contentSize.height / 2);
+    
+    
 }
 
 - (void)bodyWithCircleForSprite:(CCSprite *)sprite {
@@ -210,12 +250,55 @@
     
     b2FixtureDef ballShapeDef;
     ballShapeDef.shape = &circleShape;
-    ballShapeDef.density = 01.0f;
+    ballShapeDef.density = 10.0f;
     ballShapeDef.friction = 0.2f;
     ballShapeDef.restitution = 0.8f;
-    physicsBody->CreateFixture(&ballShapeDef);
     
-//    physicsBody->SetUserData((__bridge void *)sprite);
+    physicsBody->CreateFixture(&ballShapeDef);
+}
+
+- (void)bodyWithRectangleForSprite:(CCSprite *)sprite {
+    b2BodyDef physicsBodyDef;
+    
+    physicsBodyDef.type = b2_dynamicBody;
+    physicsBodyDef.position.Set(sprite.position.x / PTM_RATIO, sprite.position.y / PTM_RATIO);
+    
+    physicsBodyDef.userData = (__bridge void *)sprite;
+    
+    b2Body *physicsBody = self.physicsWorld->CreateBody(&physicsBodyDef);
+    
+    b2PolygonShape spriteShape;
+    spriteShape.SetAsBox(sprite.contentSize.width / PTM_RATIO / 2, sprite.contentSize.height / PTM_RATIO / 2);
+
+    b2FixtureDef spriteShapeDef;
+    spriteShapeDef.shape = &spriteShape;
+    spriteShapeDef.density = 10.00;
+    spriteShapeDef.friction = .2f;
+    spriteShapeDef.restitution = .8f;
+    
+    physicsBody->CreateFixture(&spriteShapeDef);
+}
+
+- (void)bodyWithPath:(CGPathRef)path forSprite:(CCSprite *)sprite {
+//    b2BodyDef physicsBodyDef;
+//    
+//    physicsBodyDef.type = b2_dynamicBody;
+//    physicsBodyDef.position.Set(sprite.position.x / PTM_RATIO, sprite.position.y / PTM_RATIO);
+//    
+//    physicsBodyDef.userData = (__bridge void *)sprite;
+//    
+//    b2Body *physicsBody = self.physicsWorld->CreateBody(&physicsBodyDef);
+//    
+//    b2PolygonShape spriteShape;
+//    spriteShape.
+//    
+//    b2FixtureDef spriteShapeDef;
+//    spriteShapeDef.shape = &spriteShape;
+//    spriteShapeDef.density = 10.00;
+//    spriteShapeDef.friction = .2f;
+//    spriteShapeDef.restitution = .8f;
+//    
+//    physicsBody->CreateFixture(&spriteShapeDef);
 }
 
 @end
