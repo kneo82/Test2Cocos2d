@@ -57,6 +57,11 @@
 		55C35AD21A9F35F200800BA7 /* b2WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C35A9E1A9F35F200800BA7 /* b2WeldJoint.cpp */; };
 		55C35AD31A9F35F200800BA7 /* b2WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C35AA01A9F35F200800BA7 /* b2WheelJoint.cpp */; };
 		55C35AD41A9F35F200800BA7 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C35AA31A9F35F200800BA7 /* b2Rope.cpp */; };
+		55C35D3B1A9F42A600800BA7 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C35D361A9F42A600800BA7 /* circle.png */; };
+		55C35D3C1A9F42A600800BA7 /* octagon.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C35D371A9F42A600800BA7 /* octagon.png */; };
+		55C35D3D1A9F42A600800BA7 /* sand.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C35D381A9F42A600800BA7 /* sand.png */; };
+		55C35D3E1A9F42A600800BA7 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C35D391A9F42A600800BA7 /* square.png */; };
+		55C35D3F1A9F42A600800BA7 /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C35D3A1A9F42A600800BA7 /* triangle.png */; };
 		55C400021A974C67003C22A7 /* CCTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400011A974C67003C22A7 /* CCTexture2D.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400051A974C67003C22A7 /* CCTextureAtlas.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400041A974C67003C22A7 /* CCTextureAtlas.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		55C400081A974C67003C22A7 /* CCTextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C400071A974C67003C22A7 /* CCTextureCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -293,6 +298,11 @@
 		55C35AA11A9F35F200800BA7 /* b2WheelJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2WheelJoint.h; sourceTree = "<group>"; };
 		55C35AA31A9F35F200800BA7 /* b2Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Rope.cpp; sourceTree = "<group>"; };
 		55C35AA41A9F35F200800BA7 /* b2Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Rope.h; sourceTree = "<group>"; };
+		55C35D361A9F42A600800BA7 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
+		55C35D371A9F42A600800BA7 /* octagon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = octagon.png; sourceTree = "<group>"; };
+		55C35D381A9F42A600800BA7 /* sand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sand.png; sourceTree = "<group>"; };
+		55C35D391A9F42A600800BA7 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
+		55C35D3A1A9F42A600800BA7 /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
 		55C400001A974C67003C22A7 /* CCTexture2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTexture2D.h; path = libs/cocos2d/CCTexture2D.h; sourceTree = "<group>"; };
 		55C400011A974C67003C22A7 /* CCTexture2D.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCTexture2D.m; path = libs/cocos2d/CCTexture2D.m; sourceTree = "<group>"; };
 		55C400031A974C67003C22A7 /* CCTextureAtlas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCTextureAtlas.h; path = libs/cocos2d/CCTextureAtlas.h; sourceTree = "<group>"; };
@@ -766,6 +776,18 @@
 			path = Rope;
 			sourceTree = "<group>";
 		};
+		55C35D351A9F42A600800BA7 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				55C35D361A9F42A600800BA7 /* circle.png */,
+				55C35D371A9F42A600800BA7 /* octagon.png */,
+				55C35D381A9F42A600800BA7 /* sand.png */,
+				55C35D391A9F42A600800BA7 /* square.png */,
+				55C35D3A1A9F42A600800BA7 /* triangle.png */,
+			);
+			path = Shapes;
+			sourceTree = "<group>";
+		};
 		55C400281A974C67003C22A7 /* Platforms */ = {
 			isa = PBXGroup;
 			children = (
@@ -1013,6 +1035,7 @@
 		55C4FF2F1A974C66003C22A7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				55C35D351A9F42A600800BA7 /* Shapes */,
 				55C4FF301A974C66003C22A7 /* Default.png */,
 				55C4FF321A974C66003C22A7 /* Default@2x.png */,
 				55C4FF341A974C66003C22A7 /* Default-568h@2x.png */,
@@ -1273,9 +1296,14 @@
 				55C4FF311A974C66003C22A7 /* Default.png in Resources */,
 				55C4FF3B1A974C66003C22A7 /* Icon-Small-50.png in Resources */,
 				55C35AA51A9F35F200800BA7 /* Box2DConfig.cmake in Resources */,
+				55C35D3F1A9F42A600800BA7 /* triangle.png in Resources */,
+				55C35D3C1A9F42A600800BA7 /* octagon.png in Resources */,
+				55C35D3E1A9F42A600800BA7 /* square.png in Resources */,
+				55C35D3D1A9F42A600800BA7 /* sand.png in Resources */,
 				55C4FF461A974C66003C22A7 /* iTunesArtwork in Resources */,
 				55C4FF3F1A974C66003C22A7 /* Icon-Small@2x.png in Resources */,
 				55C4FF371A974C66003C22A7 /* Default-Landscape~ipad.png in Resources */,
+				55C35D3B1A9F42A600800BA7 /* circle.png in Resources */,
 				55C4FF351A974C66003C22A7 /* Default-568h@2x.png in Resources */,
 				55C4FF431A974C66003C22A7 /* Icon@2x.png in Resources */,
 			);

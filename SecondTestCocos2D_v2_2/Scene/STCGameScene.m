@@ -10,6 +10,13 @@
 
 @interface STCGameScene ()
 @property (nonatomic, assign)   CGSize  winSize;
+
+@property (nonatomic, strong)   CCSprite    *square;
+@property (nonatomic, strong)   CCSprite    *circle;
+@property (nonatomic, strong)   CCSprite    *triangle;
+
+- (void)setupSprites;
+
 @end
 
 @implementation STCGameScene
@@ -41,11 +48,12 @@
     if (self) {
         self.winSize = [CCDirector sharedDirector].winSize;
         
-        CCLayerColor *layerColor = [CCLayerColor layerWithColor:ccc4(20, 35, 20, 255)];
+        self.touchEnabled = YES;
         
+        CCLayerColor *layerColor = [CCLayerColor layerWithColor:ccc4(50, 45, 30, 255)];
         [self addChild:layerColor];
-        
-        self.isTouchEnabled = YES;
+
+        [self setupSprites];
     }
     
     return self;
@@ -56,6 +64,7 @@
 
 #pragma mark -
 #pragma mark Touch Handle
+
 
 - (void)registerWithTouchDispatcher {
     [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:kCCMenuHandlerPriority swallowsTouches:NO];
@@ -80,6 +89,15 @@
 
 #pragma mark -
 #pragma mark Private
+
+- (void)setupSprites {
+    CCSprite *square = [CCSprite spriteWithFile:@"square.png"];
+    square.position = ccp(self.winSize.width * 0.25, self.winSize.height * 0.50);
+    self.square = square;
+    
+    [self addChild:square];
+    
+}
 
 
 
