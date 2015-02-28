@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>D3DE1300-1EA1-46AC-880B-76746B19397F</string>
+	<string>56D70B89-CC8C-46D5-9754-83E2D75C8BC6</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SecondTestCocos2D_v2_2</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>1F11B8DD63A3A446754C8E492291C46DF2FB93AD</string>
 			<key>IDESourceControlWCCName</key>
-			<string>SecondTestCocos2D_v2_2</string>
+			<string>Test2Cocos2d</string>
 		</dict>
 	</array>
 </dict>

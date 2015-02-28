@@ -225,13 +225,7 @@
     
     [self addChild:triangle];
     
-    CGMutablePathRef trianglePath = CGPathCreateMutable();
-    CGPathMoveToPoint(trianglePath, nil, -triangle.contentSize.width / 2, -triangle.contentSize.height / 2);
-    CGPathAddLineToPoint(trianglePath, nil, triangle.contentSize.width / 2, -triangle.contentSize.height / 2);
-    CGPathAddLineToPoint(trianglePath, nil, 0, triangle.contentSize.height / 2);
-    CGPathAddLineToPoint(trianglePath, nil, -triangle.contentSize.width / 2, -triangle.contentSize.height / 2);
-    
-    
+    [self bodyWithTriangleForSprite:triangle];
 }
 
 - (void)bodyWithCircleForSprite:(CCSprite *)sprite {
@@ -279,26 +273,32 @@
     physicsBody->CreateFixture(&spriteShapeDef);
 }
 
-- (void)bodyWithPath:(CGPathRef)path forSprite:(CCSprite *)sprite {
-//    b2BodyDef physicsBodyDef;
-//    
-//    physicsBodyDef.type = b2_dynamicBody;
-//    physicsBodyDef.position.Set(sprite.position.x / PTM_RATIO, sprite.position.y / PTM_RATIO);
-//    
-//    physicsBodyDef.userData = (__bridge void *)sprite;
-//    
-//    b2Body *physicsBody = self.physicsWorld->CreateBody(&physicsBodyDef);
-//    
-//    b2PolygonShape spriteShape;
-//    spriteShape.
-//    
-//    b2FixtureDef spriteShapeDef;
-//    spriteShapeDef.shape = &spriteShape;
-//    spriteShapeDef.density = 10.00;
-//    spriteShapeDef.friction = .2f;
-//    spriteShapeDef.restitution = .8f;
-//    
-//    physicsBody->CreateFixture(&spriteShapeDef);
+- (void)bodyWithTriangleForSprite:(CCSprite *)sprite {
+    b2BodyDef physicsBodyDef;
+    
+    physicsBodyDef.type = b2_dynamicBody;
+    physicsBodyDef.position.Set(sprite.position.x / PTM_RATIO, sprite.position.y / PTM_RATIO);
+    
+    physicsBodyDef.userData = (__bridge void *)sprite;
+    
+    b2Body *physicsBody = self.physicsWorld->CreateBody(&physicsBodyDef);
+    
+    b2PolygonShape spriteShape;
+    b2Vec2 vertices[3];
+    vertices[0].Set(-0.5f, -0.5f);
+    vertices[1].Set(0.0f, 0.5f);
+    vertices[2].Set(0.5f, -0.5f);
+    int32 count = 3;
+
+    spriteShape.Set(vertices, count);
+    
+    b2FixtureDef spriteShapeDef;
+    spriteShapeDef.shape = &spriteShape;
+    spriteShapeDef.density = 10.00;
+    spriteShapeDef.friction = .2f;
+    spriteShapeDef.restitution = .8f;
+    
+    physicsBody->CreateFixture(&spriteShapeDef);
 }
 
 @end
