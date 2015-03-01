@@ -13,12 +13,17 @@
 #define isIPad UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 #define PTM_RATIO (isIPad ? 64 : 32)
 
+typedef NS_ENUM(NSInteger, SpriteTagName) {
+    kSTCSpriteTagSandName = 1,
+};
+
 @interface STCGameScene ()
 @property (nonatomic, assign)   CGSize  winSize;
 
 @property (nonatomic, strong)   CCSprite        *square;
 @property (nonatomic, strong)   CCSprite        *circle;
 @property (nonatomic, strong)   CCSprite        *triangle;
+@property (nonatomic, strong)   CCSprite        *octagon;
 
 @property (nonatomic, assign)   b2World         *physicsWorld;
 @property (nonatomic, assign)   GLESDebugDraw   *debugDraw;
@@ -27,6 +32,10 @@
 - (void)setupPhysics;
 - (void)bodyWithCircleForSprite:(CCSprite *)sprite;
 - (void)bodyWithRectangleForSprite:(CCSprite *)sprite;
+- (void)bodyWithTriangleForSprite:(CCSprite *)sprite;
+- (void)bodyWithPathPoints:(NSArray *)pathPoints forSprite:(CCSprite *)sprite;
+
+- (void)spawnSand;
 
 @end
 
@@ -73,6 +82,12 @@
 
         [self setupSprites];
         
+        CCAction *repeatAction = [CCRepeat actionWithAction:[CCCallFunc actionWithTarget:self
+                                                                                selector:@selector(spawnSand)]
+                                                      times:100];
+        
+        [self runAction:repeatAction];
+        
         [self scheduleUpdate];
         [self schedule:@selector(tick:)];
     }
@@ -93,6 +108,20 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     NSLog(@"ccTouchBegan");
+    
+    for (CCSprite *node in self.children) {
+        if (kSTCSpriteTagSandName == node.tag) {
+            b2Body *body = (b2Body *)node.userData;
+            
+            b2Vec2 vector = b2Vec2(0, arc4random_uniform(50));
+            body -> ApplyLinearImpulse(vector, body->GetPosition(), true);// ->ApplyForceToCenter(vector, true);
+        }
+    }
+    
+    CCMoveBy *shake = [CCMoveBy actionWithDuration:0.05 position:ccp(0, 10)];
+    CCRepeat *repeart = [CCRepeat actionWithAction:[CCSequence actionWithArray:@[shake, shake.reverse]] times:5];
+    
+    [self runAction:repeart];
     
     return YES;
 }
@@ -153,7 +182,7 @@
             body = nextBody;
         } else {
             sprite.position = spritePosition;
-            sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle());
+            sprite.rotation = -1 * CC_RADIANS_TO_DEGREES(body->GetAngle());
             body = body->GetNext();
         }
     }
@@ -197,11 +226,23 @@
     self.physicsWorld->SetDebugDraw(_debugDraw);
     uint32 flags = 0;
     flags += b2Draw::e_shapeBit;
-    flags += b2Draw::e_jointBit;
-    flags += b2Draw::e_aabbBit;
-    flags += b2Draw::e_pairBit;
-    flags += b2Draw::e_centerOfMassBit;
+//    flags += b2Draw::e_jointBit;
+//    flags += b2Draw::e_aabbBit;
+//    flags += b2Draw::e_pairBit;
+//    flags += b2Draw::e_centerOfMassBit;
     _debugDraw->SetFlags(flags);
+}
+
+- (void)spawnSand {
+    CCSprite *sand = [CCSprite spriteWithFile:@"sand.png"];
+    
+    sand.position = ccp((float)(arc4random()%(int)self.winSize.width),
+                        self.winSize.height - sand.contentSize.height);
+    
+    [self bodyWithCircleForSprite:sand];
+    sand.tag = kSTCSpriteTagSandName;
+    
+    [self addChild:sand];
 }
 
 - (void)setupSprites {
@@ -226,6 +267,26 @@
     [self addChild:triangle];
     
     [self bodyWithTriangleForSprite:triangle];
+    
+    CCSprite *octagon = [CCSprite spriteWithFile:@"octagon.png"];
+    octagon.position = ccp(self.winSize.width * 0.5, self.winSize.height * 0.75);
+    self.octagon = octagon;
+    
+    [self addChild:octagon];
+    
+    CGFloat width = octagon.contentSize.width;
+    CGFloat height = octagon.contentSize.height;
+    
+    NSArray *pathPoints = @[[NSValue valueWithCGPoint:ccp(-width / 4 / width, -height / 2 / height)],
+                            [NSValue valueWithCGPoint:ccp(-width / 2 / width, -height / 4 / height)],
+                            [NSValue valueWithCGPoint:ccp(-width / 2 / width, height / 4 / height)],
+                            [NSValue valueWithCGPoint:ccp(-width / 4 / width, height / 2 / height)],
+                            [NSValue valueWithCGPoint:ccp(width / 4 / width, height / 2 / height)],
+                            [NSValue valueWithCGPoint:ccp(width / 2 / width, height / 4 / height)],
+                            [NSValue valueWithCGPoint:ccp(width / 2 / width, -height / 4 / height)],
+                            [NSValue valueWithCGPoint:ccp(width / 4 / width, -height / 2 / height)]];
+    
+    [self bodyWithPathPoints:pathPoints forSprite:octagon];
 }
 
 - (void)bodyWithCircleForSprite:(CCSprite *)sprite {
@@ -244,11 +305,14 @@
     
     b2FixtureDef ballShapeDef;
     ballShapeDef.shape = &circleShape;
-    ballShapeDef.density = 10.0f;
-    ballShapeDef.friction = 0.2f;
+    ballShapeDef.restitution = 1;
+    ballShapeDef.density = 20.0f;
+    ballShapeDef.friction = 1.2f;
     ballShapeDef.restitution = 0.8f;
     
     physicsBody->CreateFixture(&ballShapeDef);
+    
+    sprite.userData = physicsBody;
 }
 
 - (void)bodyWithRectangleForSprite:(CCSprite *)sprite {
@@ -274,6 +338,14 @@
 }
 
 - (void)bodyWithTriangleForSprite:(CCSprite *)sprite {
+    NSArray *pathPoints = @[[NSValue valueWithCGPoint:ccp(-0.5f, -0.5f)],
+                            [NSValue valueWithCGPoint:ccp(0.0f, 0.5f)],
+                            [NSValue valueWithCGPoint:ccp(0.5f, -0.5f)]];
+    
+    [self bodyWithPathPoints:pathPoints forSprite:sprite];
+}
+
+- (void)bodyWithPathPoints:(NSArray *)pathPoints forSprite:(CCSprite *)sprite {
     b2BodyDef physicsBodyDef;
     
     physicsBodyDef.type = b2_dynamicBody;
@@ -284,12 +356,16 @@
     b2Body *physicsBody = self.physicsWorld->CreateBody(&physicsBodyDef);
     
     b2PolygonShape spriteShape;
-    b2Vec2 vertices[3];
-    vertices[0].Set(-0.5f, -0.5f);
-    vertices[1].Set(0.0f, 0.5f);
-    vertices[2].Set(0.5f, -0.5f);
-    int32 count = 3;
+    int32 count = pathPoints.count;
 
+    b2Vec2 *vertices = new b2Vec2[count];
+    
+    NSUInteger index = 0;
+    for (NSValue *item in pathPoints) {
+        CGPoint point = [item CGPointValue];
+        vertices[index++].Set(point.x, point.y);
+    }
+    
     spriteShape.Set(vertices, count);
     
     b2FixtureDef spriteShapeDef;
@@ -299,6 +375,8 @@
     spriteShapeDef.restitution = .8f;
     
     physicsBody->CreateFixture(&spriteShapeDef);
+    
+    delete []vertices;
 }
 
 @end
